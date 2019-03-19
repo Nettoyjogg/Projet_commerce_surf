@@ -137,6 +137,29 @@
 
 
 
+		<!-- Librairie pour les photos -->
+		<!-- commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
+
+		<!-- commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.bootsfaces/bootsfaces -->
+<dependency>
+    <groupId>net.bootsfaces</groupId>
+    <artifactId>bootsfaces</artifactId>
+    <version>1.4.1</version>
+</dependency>
+
+
 	</dependencies>
 	
 	<!-- Forcer MAVEN A COMPILER AVEC LE COMPILATEUR DE JAVA 8 -->
