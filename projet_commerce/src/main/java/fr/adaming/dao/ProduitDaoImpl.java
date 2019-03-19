@@ -2,31 +2,37 @@ package fr.adaming.dao;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import fr.adaming.model.Produit;
 
-@Stateless
+@Repository // pour dire que c'est un DAO
 public class ProduitDaoImpl implements IProduitDao {
-	// LIER AUX BONNES REGLES DE CONFIG
-	@PersistenceContext(unitName = "pu_commerce")
 
-	private EntityManager em;
+	@Autowired
+	private SessionFactory sf;
+	
+	// le setter pour l'injection de dépendance
+	public void setSf(SessionFactory sf) {
+		this.sf = sf;
+	}
 
 	@Override
 	public List<Produit> afficherProduitDao() {
-		// Requete JPQL
-		String req = "SELECT p FROM Produit as p";
-
-		// Répérer un objet query
-		Query query = em.createQuery(req);
-
-		List<Produit> listeProduit = query.getResultList();
+		//récupérer le bus (session de hibernate
+		Session s=sf.getCurrentSession();
+		
+		String req="FROM Produit as p";
+		
+		Query queryHQL = s.createQuery(req);
+		
+		@SuppressWarnings("unchecked")
+		List<Produit> listeProduit = queryHQL.list();
 
 		for (Produit p : listeProduit) {
 
@@ -36,6 +42,12 @@ public class ProduitDaoImpl implements IProduitDao {
 
 		return listeProduit;
 	}
+	
+	
+	
+		
+
+	
 
 	@Override
 	public Produit ajouterProduitDao(Produit p) {
