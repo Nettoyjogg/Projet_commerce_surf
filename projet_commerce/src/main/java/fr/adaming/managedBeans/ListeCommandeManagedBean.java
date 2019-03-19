@@ -174,6 +174,7 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	public String ajouterLigneCommandeMB() {
 		int test = 0;
+		int z = 0;
 		try {
 			produit = produitService.consulterProduitService(produit);
 			test = produit.getQuantite() - ligneCommande.getQuantite();
@@ -186,19 +187,43 @@ public class ListeCommandeManagedBean implements Serializable {
 		if (maSession.getAttribute("panierSession") != null) {
 			this.panier = (Panier) maSession.getAttribute("panierSession");
 			this.panier.getListeLigneCommande();
+			z = 1;
 		} else {
 			this.panier = new Panier();
 			List<LigneCommande> listtest = new ArrayList<LigneCommande>();
 			this.panier.setListeLigneCommande(listtest);
 		}
 		if (test >= 0) {
-			// On ajoute a lc en mettant le prix
-			ligneCommande.setPrix(produit.getPrix() * ligneCommande.getQuantite());
-			this.ligneCommande.setProduit(produit);
-			this.listeLigneCommande.add(ligneCommande);
-			panier.getListeLigneCommande().addAll(listeLigneCommande);
-			maSession.setAttribute("panierSession", panier);
-			return "accueilproduit";
+			if (z == 1) {
+				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
+
+					if (produit.getDesignation() != panier.getListeLigneCommande().get(i).getProduit()
+							.getDesignation()) {
+						panier.getListeLigneCommande().get(i).setPrix(panier.getListeLigneCommande().get(i).getPrix()
+								+ (produit.getPrix() * ligneCommande.getQuantite()));
+						System.out.println("------------------------------"+panier.getListeLigneCommande().get(i));
+					} else {
+						ligneCommande.setPrix(produit.getPrix() * ligneCommande.getQuantite());
+						this.ligneCommande.setProduit(produit);
+						this.listeLigneCommande.add(ligneCommande);
+						panier.getListeLigneCommande().addAll(listeLigneCommande);
+						System.out.println("2------------------------------"+panier.getListeLigneCommande().get(i));
+					}
+					System.out.println("****************************" + panier.getListeLigneCommande().get(i));
+				}
+
+				maSession.setAttribute("panierSession", panier);
+				z = 0;
+				return "accueilproduit";
+			} else {
+				// On ajoute a lc en mettant le prix
+				ligneCommande.setPrix(produit.getPrix() * ligneCommande.getQuantite());
+				this.ligneCommande.setProduit(produit);
+				this.listeLigneCommande.add(ligneCommande);
+				panier.getListeLigneCommande().addAll(listeLigneCommande);
+				maSession.setAttribute("panierSession", panier);
+				return "accueilproduit";
+			}
 
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas assez de produit en stock"));
