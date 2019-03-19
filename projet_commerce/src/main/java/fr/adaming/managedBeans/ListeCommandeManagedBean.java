@@ -174,174 +174,269 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	public String ajouterLigneCommandeMB() {
 		int test = 0;
-		int z = 0;
-		try {
-			produit = produitService.consulterProduitService(produit);
-			test = produit.getQuantite() - ligneCommande.getQuantite();
-		} catch (Exception e) {
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Ce produit n'est pas en stock ou n'existe pas"));
-			return "testajoutlc";
-		}
+		// Ici on check si on a déjà un panier dans la session
 		if (maSession.getAttribute("panierSession") != null) {
+			// Si on en a un, on le récupère, lui et sa liste de ligneCommande,
 			this.panier = (Panier) maSession.getAttribute("panierSession");
 			this.panier.getListeLigneCommande();
-			z = 1;
 		} else {
+			// Ici, on a pas de panier, on en crée donc un nouveau, auquel on
+			// ajoute une liste de ligne commande vide, pour éviter d'avoir des
+			// erreurs de type "NullPointerException" (quand on va chercher la
+			// liste, si on crée que le panier, il n'en trouvera pas)
 			this.panier = new Panier();
 			List<LigneCommande> listtest = new ArrayList<LigneCommande>();
 			this.panier.setListeLigneCommande(listtest);
 		}
-		if (test >= 0) {
-			if (z == 1) {
+		try {
+			// Ici, on check que le produit existe bien en allant le consulter
+			// dans la Dao, et on check sa quantité pour vérifier qu'il y ait
+			// assez. L'attribut test, permettra de faire un test après le
+			// catch
+			produit = produitService.consulterProduitService(produit);
+			test = produit.getQuantite() - ligneCommande.getQuantite();
+			try {
+				// Ici, si il existe, on vérifie le nombre de produit qu'on a
+				// déjà en stock dans le panier pour vérifier qu'on puisse bien
+				// en prendre suffisamment après
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-
-					if (produit.getDesignation() != panier.getListeLigneCommande().get(i).getProduit()
-							.getDesignation()) {
-						panier.getListeLigneCommande().get(i).setPrix(panier.getListeLigneCommande().get(i).getPrix()
-								+ (produit.getPrix() * ligneCommande.getQuantite()));
-						System.out.println("------------------------------"+panier.getListeLigneCommande().get(i));
-					} else {
-						ligneCommande.setPrix(produit.getPrix() * ligneCommande.getQuantite());
-						this.ligneCommande.setProduit(produit);
-						this.listeLigneCommande.add(ligneCommande);
-						panier.getListeLigneCommande().addAll(listeLigneCommande);
-						System.out.println("2------------------------------"+panier.getListeLigneCommande().get(i));
+					if (produit.getDesignation()
+							.equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
+						test = test - panier.getListeLigneCommande().get(i).getQuantite();
 					}
-					System.out.println("****************************" + panier.getListeLigneCommande().get(i));
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			// Si produit insuffisant, ou inexistant, catch, et message.
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ce produit n'existe pas"));
+			return "accueilclient";
+		}
+		// quantité? supérieur, on continue, inférieure, voir plus bas
+		if (test >= 0) {
+			int size = 0;
+			int testfait = 0;
 
-				maSession.setAttribute("panierSession", panier);
-				z = 0;
-				return "accueilproduit";
-			} else {
-				// On ajoute a lc en mettant le prix
+			try {
+				// Ici on récupère la taille de la liste du panier
+				size = panier.getListeLigneCommande().size();
+			} catch (Exception e) {
+				// Si la liste est vide, on set la taille à 0
+				e.printStackTrace();
+				size = 0;
+			}
+			// Ici, on va parcourir la liste du panier, si elle est vide, on
+			// saute cette étape.
+			for (int i = 0; i < size; i++) {
+				// Si la liste n'est pas vide, on vérifie dans le if, que le
+				// produit qu'on
+				// veut ajouter n'est pas déjà existant dans la liste du panier
+				if (produit.getDesignation()
+						.equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
+					// Si un produit est existant, on le récupère, et on rajoute
+					// la quantité du produit qu'on veut ajouter, et son prix.
+					// De plus on set l'attribut testfait à 1, qui servira à
+					// vérifier que le produit été existant ou non
+					this.panier.getListeLigneCommande().get(i).setPrix(panier.getListeLigneCommande().get(i).getPrix()
+							+ (produit.getPrix() * ligneCommande.getQuantite()));
+					this.panier.getListeLigneCommande().get(i).setQuantite(
+							panier.getListeLigneCommande().get(i).getQuantite() + ligneCommande.getQuantite());
+					testfait = 1;
+				}
+			}
+			// Ici, on test l'existance ou non du produit qu'on veut ajouter
+			// dans le panier. Si il existe, il est forcément passé dans la
+			// boucle for précédente et donc testfait=1, si non, test fait =0
+			if (testfait == 0) {
+				// Et donc on ajoute une nouvelle ligne de commande au panier
+				// dans laquelle on met le prix et la quantitée
 				ligneCommande.setPrix(produit.getPrix() * ligneCommande.getQuantite());
 				this.ligneCommande.setProduit(produit);
 				this.listeLigneCommande.add(ligneCommande);
 				panier.getListeLigneCommande().addAll(listeLigneCommande);
-				maSession.setAttribute("panierSession", panier);
-				return "accueilproduit";
 			}
+			// Enfin on met le panier dans la session et on retourne à l'accueil
+			// panier
+			maSession.setAttribute("panierSession", panier);
+			return "panier";
 
-		} else {
+		} else
+		// Quantité limitée !
+		{
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas assez de produit en stock"));
 			return "testajoutlc";
 		}
 	}
 
+	// Créer une commande pour nos produits
 	public String lierCommandeLigneCommandeMB() {
-		int c = 0;
+		int size = 0;
+		// Bon déjà, on récupère le panier
 		this.panier = (Panier) maSession.getAttribute("panierSession");
-
 		try {
-			c = panier.getListeLigneCommande().size();
+			// Si le panier à bien une liste de commande, on récupère sa taille
+			// sinon, exception
+			size = panier.getListeLigneCommande().size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (c > 0) {
-
+		// On vérifie que la liste soit existante
+		if (size > 0) {
+			// Si oui, on set la date du jour à notre commande
 			commande.setDateCommande(date);
+			// Ici, on ajoute la commande à toute les lignes de commande du
+			// panier
 			for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 				this.panier.getListeLigneCommande().get(i).setCommande(commande);
 			}
+			// Enfin, on met le panier modifié dans la session
 			maSession.setAttribute("panierSession", panier);
 			return "accueilproduit";
+			// Si pas de liste dans le panier, message d'erreur
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de produit choisis"));
-			return "testcommande";
+			return "testclient";
 		}
 	}
 
+	// Ici on ajoute le client à la commande
 	public String lierClientCommandeMB() {
-
 		int verif = 0;
+		// Comme d'hab, on récupère le panier
 		this.panier = (Panier) maSession.getAttribute("panierSession");
 		try {
+			// On check qu'une commande à bien été crée pour y ajouter un client
+			// (d'ailleurs le setId sert surement à rien, sinon, la commande
+			// aura forcément une ligne commande à la ligne 0 de la liste)
+			// Si pas de commande, go catch
 			commande.setIdCommande(panier.getListeLigneCommande().get(0).getCommande().getIdCommande());
 			commandeService.consulterCommandeParIDService(commande);
+			// Du coup, si la commande existe, On check si un client est
+			// connecté dans la session
 			if ((Client) maSession.getAttribute("clientSession") != null) {
+				// Si il est connecté, on le récupère, et on va chercher ses
+				// attributs dans la bd avec consulterClient Service
 				this.client = (Client) maSession.getAttribute("clientSession");
 				clientService.consulterClientParIdService(client);
-
+				// Ici, pour toutes les lignes commande du panier, on ajoute le
+				// client à la commande(qui est la même commande pour toutes les
+				// lignes)
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					this.panier.getListeLigneCommande().get(i).getCommande().setClient(client);
-					verif = 1;
 				}
+				maSession.setAttribute("panierSession", panier);
+				verif = 1;
+				// Si le client n'est pas co, on ajoute celui qu'on a rentré
+				// dans le formulaire dans commande, mais aussi dans la bd,
+				// (même si il ne valide pas la commande finale, ca reste un
+				// potentiel client :) )
 			} else {
-
+				// Ici, pour toutes les lignes commande du panier, on ajoute le
+				// client à la commande(qui est la même commande pour toute les
+				// lignes)
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					this.panier.getListeLigneCommande().get(i).getCommande().setClient(client);
-
-					clientService.ajouterClientService(client, adresse);
-					maSession.setAttribute("panierSession", panier);
-					verif = 1;
-
 				}
+				// On ajoute le client et le panier dans la BD
+				clientService.ajouterClientService(client, adresse);
+				maSession.setAttribute("panierSession", panier);
+				verif = 1;
 			}
+			// Pas de commande, on renvoi un message d'erreur
 		} catch (Exception e) {
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de commandes en cour"));
 			return "accueilproduit";
 		}
-
+		// Ici, on vérifie qu'on a bien ajouté un client, mais le programme fait
+		// qu'il est impossible de ne pas en ajouter un pour l'instant (19/03),
+		// ça peut en ajouter un vide, need validator, requested
 		if (verif != 0) {
-			return "accueilproduit";
+			return "validerpanier";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de client choisi"));
 			return "testclient";
 		}
 	}
 
+	// La méthode finale, pour supposer
+	// que le client a payé, valider la commande, envoyer le mail et la facture.
 	public String validerPanierMB() {
 		int test;
-		int w = 0;
+		int size = 0;
 		int verifQuantite = 1;
 		String message = null;
 		Commande coOut = null;
+		// On récupère le panier
 		this.panier = (Panier) maSession.getAttribute("panierSession");
-
+		// On récupère la longueur de la liste du panier
 		try {
-			w = panier.getListeLigneCommande().size();
+			size = panier.getListeLigneCommande().size();
+			// SI pas de liste, on set la longueur à 0 et le test verif à 2 pour
+			// dire qu'on a pas commandé de produit
 		} catch (Exception e) {
-			w = 0;
+			size = 0;
 			verifQuantite = 2;
 			e.printStackTrace();
 		}
-		for (int i = 0; i < w; i++) {
+		// Ici on vérifie encore une fois que la quantité de produits dans notre
+		// panier est dispo. (si quelqu'un a commandé entre temps par exemple,
+		// il peut ne plus y en avoir). Il suffit d'un seul produit qui ne soit
+		// pas en quantité suffisante pour annuler la commande
+		for (int i = 0; i < size; i++) {
 			produit = produitService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 			test = produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite();
+			// SI un des produits n'est pas en quantité suffisante, on set
+			// l'attribut à 0
 			if (test < 0) {
 				verifQuantite = 0;
 			}
 		}
-
+		// On a bien commandé
 		if (verifQuantite == 1) {
 			try {
-
 				int coFait = 0;
+				// Un peu compliqué, ici, on récupère toute les lignes de
+				// commande du panier dans l'attribut "listeligneCommande", car
+				// le panier est "Transient", on ne pourra donc pas faire
+				// panier.get... pour ajouter un élément dans la bd. On stocke
+				// donc le panier dans "listelignecommadne"
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					produit = produitService
 							.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 					listeLigneCommande.addAll(panier.getListeLigneCommande());
+					// De la même façon, on ajoute une commande dans la bd,
+					// comme on est dans le "for", pour l'ajouter qu'une seule
+					// fois, attribut coFait qui s'incrèmente. On aurait très
+					// bien pu, sortir les trois lignes sous le if pour les
+					// mettres hors du "for" et mettre get(0) à la place de
+					// get(i)
 					if (coFait == 0) {
 						coOut = panier.getListeLigneCommande().get(i).getCommande();
 						commandeService.ajouterCommandeService(coOut);
 						coFait++;
 					}
-					LigneCommande ligneCommandeIn = panier.getListeLigneCommande().get(i);
+					// Ici, on ajoute les lignes commandes dans la bd
+					LigneCommande ligneCommandeIn = listeLigneCommande.get(i);
 					ligneCommandeService.AjouterLigneCommandeService(ligneCommandeIn);
 				}
+				// Ici, on récupère la commande pour s'en servir dans le message
+				// de notre mail. Ici on a mis get(0)
 				coOut = commandeService
 						.consulterCommandeParIDService(panier.getListeLigneCommande().get(0).getCommande());
+				// LE message du mail
 				message = "Bonjour Mme/Mr " + coOut.getClient().getNomClient()
 						+ "\n Nous vous informons que votre commande: " + coOut.getIdCommande() + " passée le "
 						+ coOut.getDateCommande() + " a bien été validée.\n Nous esperons que vos articles: "
 						+ panier.getListeLigneCommande() + " vous plairont. \n A bientot !";
+				// On "test" l'envoi du mail
 				try {
 					SendMailService sm = new SendMailService();
 					sm.sendMail(coOut.getClient().getEmail(), message);
+					// si le mail est bien envoyé, on retire les quantités aux
+					// produits de la bd
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 						produit.setQuantite(
 								produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite());
@@ -349,56 +444,68 @@ public class ListeCommandeManagedBean implements Serializable {
 											// test
 						produitService.modifierProduitService(produit, admin);
 					}
+					// Enfin, on crée un nouveau panier qu'on met dans la
+					// session !
 					this.panier = new Panier();
 					panier.setListeLigneCommande(new ArrayList<>());
 					maSession.setAttribute("panierSession", panier);
 					return "accueilclient";
+					// Ici, le mail n'est pas envoyé
 				} catch (Exception e) {
 					e.printStackTrace();
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage("message non envoyé, annulation validation commande"));
+					// Du coup, on annule la commande, et on supprime la
+					// commande et ligne commande ajoutée dans la bd
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 						ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
 					}
 					commandeService.supprimerCommandeService(coOut);
-					this.panier = new Panier();
-					panier.setListeLigneCommande(new ArrayList<>());
+					// On set le panier (qui n'a pas changé normalement
 					maSession.setAttribute("panierSession", panier);
-					return "validerpanier";
+					return "panier";
 				}
-
+				// Ici c'est pour tout problèmes survenu lors de la validation
+				// de la commande
 			} catch (Exception e) {
 				e.printStackTrace();
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
 						"Un problème est apparu lors de la validation de votre commande, recommencez!"));
+				// On vérifie qu'on a bien une liste de commande dans le panier,
+				// si oui, on supprime les lignes commandes et commandes qu'on a
+				// éventuellement mise dans la bd
 				try {
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 						ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
 					}
 					commandeService.supprimerCommandeService(coOut);
+					// si il n'y en a pas, osef
 				} catch (Exception e2) {
 					e.printStackTrace();
 				}
-				this.panier = new Panier();
-				panier.setListeLigneCommande(new ArrayList<>());
+				// Enfin on récup le panier
 				maSession.setAttribute("panierSession", panier);
-				return "validerpanier";
+				return "panier";
 			}
 
 		}
+		// Ici, le produit n'est pas en quantité suffisante
 		if (verifQuantite == 0) {
+			// On envoie un message concernant le produit manquant.
 			for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 				produit = produitService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 				test = produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite();
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage("Le produit " + produit.getDesignation() + " ayant l'id "
 								+ produit.getIdProduit() + " n'est plus disponible en stock"));
+				// Et on le supprimer du panier
+				panier.getListeLigneCommande().remove(panier.getListeLigneCommande().get(i));
 
 			}
-			this.panier = new Panier();
-			panier.setListeLigneCommande(new ArrayList<>());
+			// On met le panier modifié dans la session
 			maSession.setAttribute("panierSession", panier);
-			return "accueilproduit";
+			return "panier";
+			// verif quantité=2 ici, donc on a pas commandé
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Vous n'avez pas commandé de produits"));
