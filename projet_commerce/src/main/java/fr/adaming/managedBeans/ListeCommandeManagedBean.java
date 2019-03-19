@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -29,14 +29,14 @@ import fr.adaming.service.SendMailService;
 public class ListeCommandeManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EJB
-	private ILigneCommandeService lcService;
-	@EJB
-	private ICommandeService coService;
-	@EJB
-	private IProduitService pService;
-	@EJB
-	private IClientService cService;
+	@ManagedProperty(value = "#{lcService}")
+	private ILigneCommandeService ligneCommandeService;
+	@ManagedProperty(value = "#{coService}")
+	private ICommandeService commandeService;
+	@ManagedProperty(value = "#{pService}")
+	private IProduitService produitService;
+	@ManagedProperty(value = "#{cService}")
+	private IClientService clientService;
 
 	// Attribut
 	private LigneCommande ligneCommande;
@@ -157,7 +157,7 @@ public class ListeCommandeManagedBean implements Serializable {
 	public String ajouterLigneCommandeMB() {
 		int test = 0;
 		try {
-			produit = pService.consulterProduitService(produit);
+			produit = produitService.consulterProduitService(produit);
 			test = produit.getQuantite() - ligneCommande.getQuantite();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -217,10 +217,10 @@ public class ListeCommandeManagedBean implements Serializable {
 		this.panier = (Panier) maSession.getAttribute("panierSession");
 		try {
 			commande.setIdCommande(panier.getListeLigneCommande().get(0).getCommande().getIdCommande());
-			coService.consulterCommandeParIDService(commande);
+			commandeService.consulterCommandeParIDService(commande);
 			if ((Client) maSession.getAttribute("clientSession") != null) {
 				this.client = (Client) maSession.getAttribute("clientSession");
-				cService.consulterClientParIdService(client);
+				clientService.consulterClientParIdService(client);
 
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					this.panier.getListeLigneCommande().get(i).getCommande().setClient(client);
@@ -231,7 +231,7 @@ public class ListeCommandeManagedBean implements Serializable {
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					this.panier.getListeLigneCommande().get(i).getCommande().setClient(client);
 
-					cService.ajouterClientService(client, adresse);
+					clientService.ajouterClientService(client, adresse);
 					maSession.setAttribute("panierSession", panier);
 					verif = 1;
 
@@ -267,7 +267,7 @@ public class ListeCommandeManagedBean implements Serializable {
 			e.printStackTrace();
 		}
 		for (int i = 0; i < w; i++) {
-			produit = pService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
+			produit = produitService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 			test = produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite();
 			if (test < 0) {
 				verifQuantite = 0;
@@ -279,17 +279,19 @@ public class ListeCommandeManagedBean implements Serializable {
 
 				int coFait = 0;
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-					produit = pService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
+					produit = produitService
+							.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 					listeLigneCommande.addAll(panier.getListeLigneCommande());
 					if (coFait == 0) {
 						coOut = panier.getListeLigneCommande().get(i).getCommande();
-						coService.ajouterCommandeService(coOut);
+						commandeService.ajouterCommandeService(coOut);
 						coFait++;
 					}
 					LigneCommande ligneCommandeIn = panier.getListeLigneCommande().get(i);
-					lcService.AjouterLigneCommandeService(ligneCommandeIn);
+					ligneCommandeService.AjouterLigneCommandeService(ligneCommandeIn);
 				}
-				coOut = coService.consulterCommandeParIDService(panier.getListeLigneCommande().get(0).getCommande());
+				coOut = commandeService
+						.consulterCommandeParIDService(panier.getListeLigneCommande().get(0).getCommande());
 				message = "Bonjour Mme/Mr " + coOut.getClient().getNomClient()
 						+ "\n Nous vous informons que votre commande: " + coOut.getIdCommande() + " passée le "
 						+ coOut.getDateCommande() + " a bien été validée.\n Nous esperons que vos articles: "
@@ -302,7 +304,7 @@ public class ListeCommandeManagedBean implements Serializable {
 								produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite());
 						admin.setIdAdmin(1);// C'est moche, mais c'est pour le
 											// test
-						pService.modifierProduitService(produit, admin);
+						produitService.modifierProduitService(produit, admin);
 					}
 					this.panier = new Panier();
 					panier.setListeLigneCommande(new ArrayList<>());
@@ -313,9 +315,9 @@ public class ListeCommandeManagedBean implements Serializable {
 					FacesContext.getCurrentInstance().addMessage(null,
 							new FacesMessage("message non envoyé, annulation validation commande"));
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-						lcService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
+						ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
 					}
-					coService.supprimerCommandeService(coOut);
+					commandeService.supprimerCommandeService(coOut);
 					this.panier = new Panier();
 					panier.setListeLigneCommande(new ArrayList<>());
 					maSession.setAttribute("panierSession", panier);
@@ -328,9 +330,9 @@ public class ListeCommandeManagedBean implements Serializable {
 						"Un problème est apparu lors de la validation de votre commande, recommencez!"));
 				try {
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-						lcService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
+						ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
 					}
-					coService.supprimerCommandeService(coOut);
+					commandeService.supprimerCommandeService(coOut);
 				} catch (Exception e2) {
 					e.printStackTrace();
 				}
@@ -343,7 +345,7 @@ public class ListeCommandeManagedBean implements Serializable {
 		}
 		if (verifQuantite == 0) {
 			for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-				produit = pService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
+				produit = produitService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 				test = produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite();
 				FacesContext.getCurrentInstance().addMessage(null,
 						new FacesMessage("Le produit " + produit.getDesignation() + " ayant l'id "

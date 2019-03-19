@@ -1,18 +1,28 @@
 package fr.adaming.service;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import fr.adaming.dao.IClientDao;
 import fr.adaming.dao.ICommandeDao;
 import fr.adaming.model.Client;
 import fr.adaming.model.Commande;
 
-@Stateful
+@Service("coService")
+@Transactional
 public class CommandeServiceImpl implements ICommandeService {
-	@EJB
+	@Autowired
 	ICommandeDao coDao;
-	@EJB
+	@Autowired
 	IClientDao cDao;
+
+	public void setCoDao(ICommandeDao coDao) {
+		this.coDao = coDao;
+	}
+
+	public void setcDao(IClientDao cDao) {
+		this.cDao = cDao;
+	}
 
 	@Override
 	public Commande ajouterCommandeService(Commande co) {

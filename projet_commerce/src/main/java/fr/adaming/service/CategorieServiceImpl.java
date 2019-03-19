@@ -1,19 +1,24 @@
 package fr.adaming.service;
 
 import java.util.List;
-
-import javax.ejb.EJB;
-import javax.ejb.Stateful;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import fr.adaming.dao.ICategorieDao;
 import fr.adaming.model.Administrateur;
 import fr.adaming.model.Categorie;
 
-@Stateful
+@Service("caService")
+@Transactional
 public class CategorieServiceImpl implements ICategorieService {
 
 	// Transfo UML Java
-	@EJB
+	@Autowired
 	ICategorieDao caDao;
+
+	public void setCaDao(ICategorieDao caDao) {
+		this.caDao = caDao;
+	}
 
 	@Override
 	public List<Categorie> afficherCategorieService(Administrateur admin) {

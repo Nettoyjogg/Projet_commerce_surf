@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Header</title>
+</h:head>
+<h:body>
+
+	<ui:composition>
+		<b:navBar brand="Commerce" brandHref="accueil.xhtml"
+			id="dropMenuExample" contentDisabled="#{navBarBean.navBarDisabled}"
+			inverse="true">
+			<b:navbarLinks contentDisabled="#{navBarBean.navBarLinksDisabled}">
+				<b:dropMenu value="Categorie"
+					contentDisabled="#{navBarBean.dropMenuDisabled}">
+					<b:navLink value="Accueil" href="accueil.xhtml"></b:navLink>
+					<b:navLink value="Ajouter" href="ajoutcategorie.xhtml"></b:navLink>
+					<b:navLink value="Modifier" href="modifiercategorie.xhtml"></b:navLink>
+					<b:navLink value="Supprimer" href="supprimercategorie.xhtml"></b:navLink>
+					<b:navLink value="Rechercher" href="recherchecategorie.xhtml"></b:navLink>
+
+				</b:dropMenu>
+				<b:dropMenu value="Produit"
+					contentDisabled="#{navBarBean.dropMenuDisabled}">
+					<b:navLink value="Accueil" href="accueilproduitadmin.xhtml"></b:navLink>
+					<b:navLink value="Ajouter" href="ajoutproduit.xhtml"></b:navLink>
+					<b:navLink value="Modifier" href="modifierproduit.xhtml"></b:navLink>
+					<b:navLink value="Supprimer" href="supprimerproduit.xhtml"></b:navLink>
+					<b:navLink value="Rechercher" href="rechercheproduit.xhtml"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Opération"></b:navLink>
+					<b:navLink value="RechercherViaCat "
+						href="rechercheproduitcategorie.xhtml"></b:navLink>
+					<b:navLink value="Créditer" href="crediterCompteCourant.xhtml"></b:navLink>
+					<b:navLink value="Débiter" href="debiterCompteCourant.xhtml"></b:navLink>
+					<b:navLink value="Virement" href="virerCompteCourant.xhtml"></b:navLink>
+				</b:dropMenu>
+				<b:dropMenu value="Test"
+					contentDisabled="#{navBarBean.dropMenuDisabled}">
+					<b:navLink value="Accueil" href="accueilCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Testlc" href="testajoutlc.xhtml"></b:navLink>
+					<b:navLink value="TestCommande" href="testcommande.xhtml"></b:navLink>
+					<b:navLink value="TestClient" href="testclient.xhtml"></b:navLink>
+					<b:navLink value="Modifier" href="modifCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Supprimer" href="supprCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Rechercher" href="rechercheCompteEpargne.xhtml"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Opération"></b:navLink>
+					<b:navLink value="Lier Client " href="lierCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Créditer" href="crediterCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Débiter" href="debiterCompteEpargne.xhtml"></b:navLink>
+					<b:navLink value="Virement" href="virerCompteEpargne.xhtml"></b:navLink>
+				</b:dropMenu>
+				<b:dropMenu value="Deco/Reco"
+					contentDisabled="#{navBarBean.dropMenuDisabled}">
+					<b:navCommandLink value="Deconnexion Admin"
+						action="#{adminMB.seDeconnecter}"></b:navCommandLink>
+
+					<b:dropMenu value="Connexion Admin"
+						contentDisabled="#{navBarBean.dropMenuDisabled}">
+						<b:form>
+							<b:inputText name="login"
+								value="#{adminMB.administrateur.mailAdmin}"></b:inputText>
+							<b:inputSecret name="mdp" value="#{adminMB.administrateur.mdp}"></b:inputSecret>
+							<b:commandButton value="Se connecter"
+								action="#{adminMB.seConnecter}"></b:commandButton>
+						</b:form>
+					</b:dropMenu>
+				</b:dropMenu>
+			</b:navbarLinks>
+		</b:navBar>
+	</ui:composition>
+</h:body>
+</html>
