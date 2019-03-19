@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+
+	<title>Ajout Produit</title>
+</h:head>
+<h:body>
+
+	<h:form>
+		<ui:include src="/resources/templates/headerclient.xhtml" />
+	</h:form>
+
+
+	<h1 style="color: blue; text-align: center;">Formulaire d'ajout
+		des produits</h1>
+
+	<!-- enctype pour ajouter une photo -->
+	<h:form enctype="multipart/form-data">
+		<h:panelGrid columns="2">
+
+		Designation: <h:inputText value="#{pMB.produit.designation}" />
+
+		Description : <h:inputText value="#{pMB.produit.description}" />
+		
+		Prix: <h:inputText value="#{pMB.produit.prix}" />
+		
+		Quantite: <h:inputText value="#{pMB.produit.quantite}" />
+		
+		Selectionne: <h:inputText value="#{pMB.produit.selectionne}" />
+		
+		Photo: <p:fileUpload value="#{pMB.image}" mode="simple"
+				skinSimple="true" /> 
+		
+		Categorie: <h:inputText value="#{pMB.categorie.idCategorie}" />
+
+			<!-- Pour envoyer directement en Post -->
+			<h:commandButton value="Ajouter" action="#{}"></h:commandButton>
+
+		</h:panelGrid>
+	</h:form>
+
+	<h1 style="color: blue; text-align: center;">
+		<h:messages />
+	</h1>
+</h:body>
+</html>

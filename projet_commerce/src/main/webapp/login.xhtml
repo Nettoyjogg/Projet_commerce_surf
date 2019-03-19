@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+<title>Insert title here</title>
+</h:head>
+
+
+<h:body id="cestlebody">
+<!-- Ajouter du style à ma banque -->
+<h:outputStylesheet library="css" name="monStyle.css"/>
+
+
+	<h1 style="color: #0086b3; text-align: center;">Connexion au e-Commerce</h1>
+		
+	<h:form>
+
+		<div id="loginmdp">
+			<div class="ui-g">
+				<div class="ui-g-1 ui-md-6 ui-lg-3"></div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3">
+					<h:outputLabel class="labeltab" for="login"> Login:</h:outputLabel>
+				</div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3">
+					<h:inputText name="login" value="#{adminMB.administrateur.mailAdmin}"  />
+				</div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3"></div>
+			</div>
+			<div class="ui-g">
+				<div class="ui-g-1 ui-md-6 ui-lg-3"></div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3">
+					<h:outputLabel class="labeltab" for="mdp">  Mot de passe :</h:outputLabel>
+				</div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3">
+					<h:inputSecret name="mdp" value="#{adminMB.administrateur.mdp}"  />
+				</div>
+				<div class="ui-g-1 ui-md-6 ui-lg-3"></div>
+			</div>
+			<br />
+					<!-- Pour envoyer directement en Post -->
+		<h:commandButton value="Se connecter" action="#{adminMB.seConnecter}"
+			style="background-color: #0086b3; color:white;"></h:commandButton>
+		</div>
+
+	</h:form>
+	<!--  Ajout d'un gif responsive -->
+	<img src="resources/images/entreeprogramme.gif" alt="gifbanque" id="banquegiflogin" />
+
+	<h1 style="color: blue;text-align: center;"> <h:messages/></h1>
+
+
+
+</h:body>
+</html>

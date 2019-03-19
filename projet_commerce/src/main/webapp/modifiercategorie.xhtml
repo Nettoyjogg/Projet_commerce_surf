@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Facelet Modifier</title>
+</h:head>
+<h:body>
+
+
+	<h:form>
+		<ui:include src="/resources/templates/header.xhtml" />
+	</h:form>
+
+	<h1 style="color: red; text-align: center">Formulaire de
+		modification</h1>
+	<h:form enctype="multipart/form-data">
+		<h:panelGrid columns="2">
+		Id: <h:inputText value="#{caMB.categorie.idCategorie}">
+				<p:ajax event="keyup" listener="#{caMB.modifierCategorieAutoMB}"
+					update="idform,idform1, idform2" />
+				<!-- Event : Blur  -->
+			</h:inputText>				
+		Nom: <h:inputText id="idform" value="#{caMB.categorie.nomCategorie}" />
+			Photo avant: <h:graphicImage id="idform1" value="#{caMB.categorie.img}" />
+			Photo après <p:fileUpload value="#{caMB.image}" mode="simple"	skinSimple="true" />
+		Description: <h:inputText id="idform2"
+				value="#{caMB.categorie.description}" />
+
+			<h:commandButton value="modifier"
+				action="#{caMB.modifierCategorieMB}"></h:commandButton>
+		</h:panelGrid>
+	</h:form>
+	<h1 style="color: red; text-align: center">
+		<h:messages />
+	</h1>
+</h:body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+<h:head>
+	<title>Ma premi�re Facelet</title>
+</h:head>
+
+<h:body>
+	<h:form>
+		<ui:include src="/resources/templates/headerclient.xhtml" />
+	</h:form>
+	<h1 style="color: blue; text-align: center;">Liste des catégories</h1>
+
+	<h:form>
+		<p:dataTable var="lc"
+			value="#{sessionScope.panierSession.listeLigneCommande}">
+			<p:column headerText="ID">
+				<h:outputText value="#{lc.idLigneCommande}" />
+			</p:column>
+
+			<p:column headerText="Quantité">
+				<h:outputText value="#{lc.quantite}" />
+			</p:column>
+
+			<p:column headerText="Prix">
+				<h:outputText value="#{lc.prix}" />
+			</p:column>
+
+			<p:column headerText="id Produit">
+				<h:outputText value="#{lc.produit.idProduit}" />
+			</p:column>
+
+
+		</p:dataTable>
+	</h:form>
+	<h1 style="color: blue; text-align: center;">
+		<h:messages />
+	</h1>
+</h:body>
+</html>
