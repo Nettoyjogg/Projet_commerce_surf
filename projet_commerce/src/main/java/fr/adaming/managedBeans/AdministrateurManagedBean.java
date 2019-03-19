@@ -1,6 +1,7 @@
 package fr.adaming.managedBeans;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -9,6 +10,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import fr.adaming.model.Administrateur;
+import fr.adaming.model.Categorie;
+import fr.adaming.model.Produit;
 import fr.adaming.service.IAdministrateurService;
 import fr.adaming.service.ICategorieService;
 import fr.adaming.service.IProduitService;
@@ -77,15 +80,15 @@ public class AdministrateurManagedBean implements Serializable {
 			// Récuprer les différentes liste sur la session de ce
 			// administrateur
 			
-			//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++a ajouter apres
-		//	List<Categorie> liste = categorieService.afficherCategorieService(adminOut);
-		//	List<Produit> listep = produitService.afficherProduitService(adminOut);
+			
+			List<Categorie> liste = categorieService.afficherCategorieService(adminOut);
+			List<Produit> listep = produitService.afficherProduitService(adminOut);
 
 			// Mettre la liste dans la session
-		//	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("categorieSession", liste);
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("categorieSession", liste);
 
 			// Mettre la liste dans la session
-		//	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("produitSession", listep);
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("produitSession", listep);
 
 			// Mettre le administrateur dans la session
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("adminSession", adminOut);

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -21,13 +22,13 @@ public class ClientManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// Transformation de l'association UML en Java
-	@EJB
-	private IClientService cService;
-	@EJB
-	private ICategorieService caService;
-	@EJB
-	private IProduitService pService;
+	//Transformation de l'association UML en JAVA 
+	@ManagedProperty(value="#{cService}") //utilise by name
+	private IClientService clientService;
+	@ManagedProperty(value="#{caService}")
+	private ICategorieService categorieService;
+	@ManagedProperty(value="#{pService}")
+	private IProduitService produitService;
 
 	// Déclaration des attributs
 	private Client client;
@@ -58,21 +59,28 @@ public class ClientManagedBean implements Serializable {
 		this.client = client;
 	}
 
+	
+	public void setClientService(IClientService clientService) {
+		this.clientService = clientService;
+	}
+
+	public void setCategorieService(ICategorieService categorieService) {
+		this.categorieService = categorieService;
+	}
+
+	public void setProduitService(IProduitService produitService) {
+		this.produitService = produitService;
+	}
+
 	// méthodes et métiers
 	public String connecterClient() {
 		// sedéconnecter d'une session antérieure aucasou
 
 		// chercher le administrateur par son mail et mdp
-		Client cOut = cService.estExistantService(client);
+		Client cOut = clientService.estExistantService(client);
 
 		if (cOut != null) {
-			// Récuprer les différentes liste sur la session de ce
-			// administrateur
-			// ------------------------------------------------Il va falloir
-			// rédéfinir les méthodes sans les admins
-			// List<Categorie> liste =
-			// caService.afficherCategorieService(adminOut);
-			// List<Produit> listep = pService.afficherProduitService(adminOut);
+		
 
 			// Mettre la liste dans la session
 			Panier panier = (Panier) maSession.getAttribute("panierSession");
