@@ -293,11 +293,11 @@ public class ListeCommandeManagedBean implements Serializable {
 			}
 			// Enfin, on met le panier modifié dans la session
 			maSession.setAttribute("panierSession", panier);
-			return "accueilproduit";
+			return "testclient";
 			// Si pas de liste dans le panier, message d'erreur
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de produit choisis"));
-			return "testclient";
+			return "accueilproduit";
 		}
 	}
 
@@ -364,7 +364,7 @@ public class ListeCommandeManagedBean implements Serializable {
 	// La méthode finale, pour supposer
 	// que le client a payé, valider la commande, envoyer le mail et la facture.
 	public String validerPanierMB() {
-		int test;
+		int test = 0;
 		int size = 0;
 		int verifQuantite = 1;
 		String message = null;
@@ -415,12 +415,41 @@ public class ListeCommandeManagedBean implements Serializable {
 					// get(i)
 					if (coFait == 0) {
 						coOut = panier.getListeLigneCommande().get(i).getCommande();
-						commandeService.ajouterCommandeService(coOut);
-						coFait++;
+						if (panier.getListeLigneCommande().get(i).getCommande().getClient() != null) {
+							commandeService.ajouterCommandeService(coOut);
+							coFait++;
+						} else {
+							FacesContext.getCurrentInstance().addMessage(null,
+									new FacesMessage("Votre commande n'a pas de client, ajouter en un"));
+							// On set le panier (qui n'a pas changé normalement
+							maSession.setAttribute("panierSession", panier);
+							return "testclient";
+						}
 					}
 					// Ici, on ajoute les lignes commandes dans la bd
 					LigneCommande ligneCommandeIn = listeLigneCommande.get(i);
-					ligneCommandeService.AjouterLigneCommandeService(ligneCommandeIn);
+					// On vérifie que la ligne commande a bien une commande et
+					// un client
+					if (ligneCommandeIn.getCommande() != null && ligneCommandeIn.getCommande().getClient() != null) {
+						// Ici, on ajoute les lignes commandes dans la bd
+						ligneCommandeService.AjouterLigneCommandeService(ligneCommandeIn);
+						// Si non, on renvoi à la validation
+					} else {
+						FacesContext.getCurrentInstance().addMessage(null,
+								new FacesMessage("Un de vos produits n'a pas été commandé, veuillez commander"));
+						// Suppression de la ligne de la bd et commande sans
+						// client
+						for (int i2 = 0; i2 < panier.getListeLigneCommande().size(); i2++) {
+							ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i2));
+							// on supprime la commande de la bd et On set le
+							// panier (qui
+							// n'a pas changé normalement
+						}
+						commandeService.supprimerCommandeService(coOut);
+						maSession.setAttribute("panierSession", panier);
+						return "testcommande";
+					}
+
 				}
 				// Ici, on récupère la commande pour s'en servir dans le message
 				// de notre mail. Ici on a mis get(0)
