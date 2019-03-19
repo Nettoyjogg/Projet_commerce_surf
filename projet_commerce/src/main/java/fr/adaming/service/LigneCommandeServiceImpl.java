@@ -33,31 +33,29 @@ public class LigneCommandeServiceImpl implements ILigneCommandeService {
 
 	@Override
 	public LigneCommande AjouterLigneCommandeService(LigneCommande lc) {
-		return lcDao.AjouterLigneCommandeDao(lc);
+		return lcDao.ajouterLigneCommandeDao(lc);
 	}
 
-	/*@Override
-	public LigneCommande AjouterLigneCommandeService(LigneCommande lc, Client c) {
-		return null;
-	}*/
+	/*
+	 * @Override public LigneCommande AjouterLigneCommandeService(LigneCommande
+	 * lc, Client c) { return null; }
+	 */
 
-	/*@Override
-	public int LierLigneCommandeCommandeService(LigneCommande lc, Commande co) {
-		co = coDao.consulterCommandeParIDDao(co);
-		lc.setCommande(co);
-		return lcDao.LierLigneCommandeCommandeDao(lc);
-	}*/
+	/*
+	 * @Override public int LierLigneCommandeCommandeService(LigneCommande lc,
+	 * Commande co) { co = coDao.consulterCommandeParIDDao(co);
+	 * lc.setCommande(co); return lcDao.LierLigneCommandeCommandeDao(lc); }
+	 */
 
-	/*@Override
-	public int LierLigneCommandeProduitService(LigneCommande lc, Produit p) {
-		p = pDao.consulterProduitDao(p);
-		lc.setProduit(p);
-		return lcDao.LierLigneCommandeProduitDao(lc);
-	}*/
+	/*
+	 * @Override public int LierLigneCommandeProduitService(LigneCommande lc,
+	 * Produit p) { p = pDao.consulterProduitDao(p); lc.setProduit(p); return
+	 * lcDao.LierLigneCommandeProduitDao(lc); }
+	 */
 
 	@Override
 	public int supprimerLigneCommandeService(LigneCommande lc) {
-		return lcDao.SupprimerLigneCommandeDao(lc);
+		return lcDao.supprimerLigneCommandeDao(lc);
 	}
 
 }
