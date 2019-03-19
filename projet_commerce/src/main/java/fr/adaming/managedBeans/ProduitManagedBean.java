@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -22,10 +23,11 @@ import fr.adaming.service.IProduitService;
 public class ProduitManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@EJB
-	private IProduitService pService;
-	@EJB
-	private ICategorieService caService;
+	//Transformation de l'association UML en JAVA 
+	@ManagedProperty(value="#{pService}") //utilise by name
+	private IProduitService produitService;
+	@ManagedProperty(value="#{caService}")
+	private ICategorieService categorieService;
 
 	// Attribut
 	private Administrateur administrateur;
@@ -49,8 +51,8 @@ public class ProduitManagedBean implements Serializable {
 	@PostConstruct // Cette annotation sert à dire que la méthode doit être
 	// exécutée après l'instanciation de l'objet.
 	public void init() {
-		this.listeProduit = pService.afficherProduitService();
-		this.listeCategorie = caService.afficherCategorieService();
+		this.listeProduit = produitService.afficherProduitService();
+		this.listeCategorie = categorieService.afficherCategorieService();
 		maSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		this.administrateur = (Administrateur) maSession.getAttribute("adminSession");
 	}
@@ -105,16 +107,26 @@ public class ProduitManagedBean implements Serializable {
 		this.listeCategorie = listeCategorie;
 	}
 
+	
+	
+	public void setProduitService(IProduitService produitService) {
+		this.produitService = produitService;
+	}
+
+	public void setCategorieService(ICategorieService categorieService) {
+		this.categorieService = categorieService;
+	}
+
 	// les méthodes métiers du Managed Bean
 	public String ajouterProduitMB() {
 		if (this.image != null) {
 			this.produit.setPhoto(this.image.getContents());
 		}
-		Produit pAjout = pService.ajouterProduitService(produit, categorie, administrateur);
+		Produit pAjout = produitService.ajouterProduitService(produit, categorie, administrateur);
 		if (pAjout.getIdProduit() != 0) {
 			// Récuperer la liste des produits
 			
-			List<Produit> listep = pService.afficherProduitService(administrateur);
+			List<Produit> listep = produitService.afficherProduitService(administrateur);
 
 			// Mettre à jour la liste dans la sessin
 			maSession.setAttribute("produitSession", listep);
@@ -131,13 +143,13 @@ public class ProduitManagedBean implements Serializable {
 		if(this.image!=null){
 			this.produit.setPhoto(this.image.getContents());
 		}
-		categorie = caService.consulterCategorieParIDService(categorie);
+		categorie = categorieService.consulterCategorieParIDService(categorie);
 	
 		this.produit.setCategorie(categorie);
-		int verif = pService.modifierProduitService(produit, administrateur);
+		int verif = produitService.modifierProduitService(produit, administrateur);
 		if (verif != 0) {
 			// Récuperer la liste
-			List<Produit> listep = pService.afficherProduitService(administrateur);
+			List<Produit> listep = produitService.afficherProduitService(administrateur);
 
 			// Mettre à jour la liste dans la sessin
 			maSession.setAttribute("produitSession", listep);
@@ -151,17 +163,17 @@ public class ProduitManagedBean implements Serializable {
 	}
 
 	public void modifierProduitAutoMB() {
-		categorie = caService.consulterCategorieParIDService(categorie);
-		this.produit = pService.consulterProduitService(produit, administrateur);
+		categorie = categorieService.consulterCategorieParIDService(categorie);
+		this.produit = produitService.consulterProduitService(produit, administrateur);
 		this.produit.getCategorie();
 		this.produit.setImg("data:image/png;base64," + Base64.encodeBase64String(produit.getPhoto()));
 	}
 
 	public String supprimerProduitMB() {
-		int verif = pService.supprimerProduitService(produit, administrateur);
+		int verif = produitService.supprimerProduitService(produit, administrateur);
 		if (verif != 0) {
 			// Récuperer la liste
-			List<Produit> listep = pService.afficherProduitService(administrateur);
+			List<Produit> listep = produitService.afficherProduitService(administrateur);
 
 			// Mettre à jour la liste dans la sessin
 			maSession.setAttribute("produitSession", listep);
@@ -175,7 +187,7 @@ public class ProduitManagedBean implements Serializable {
 	}
 
 	public void rechercherProduitParIdMB() {
-		this.produit = pService.consulterProduitService(produit, administrateur);
+		this.produit = produitService.consulterProduitService(produit, administrateur);
 		this.produit.setImg("data:image/png;base64," + Base64.encodeBase64String(produit.getPhoto()));
 		if (produit == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Le produit n'existe pas"));
@@ -186,7 +198,7 @@ public class ProduitManagedBean implements Serializable {
 	}
 	
 	public void rechercherProduitClientParIdMB() {
-		this.produit = pService.consulterProduitService(produit);
+		this.produit = produitService.consulterProduitService(produit);
 		this.produit.setImg("data:image/png;base64," + Base64.encodeBase64String(produit.getPhoto()));
 		if (produit == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Le produit n'existe pas"));
@@ -198,10 +210,10 @@ public class ProduitManagedBean implements Serializable {
 
 	public void rechercherProduitCategorieMB() {
 		try {
-			categorie = caService.consulterCategorieParIDService(categorie);
+			categorie = categorieService.consulterCategorieParIDService(categorie);
 			this.produit.setCategorie(categorie);
 
-			this.listeProduit = pService.consulterProduitCategorieService(this.produit);
+			this.listeProduit = produitService.consulterProduitCategorieService(this.produit);
 			for (Produit p : listeProduit) {
 
 				p.setImg("data:image/png;base64," + Base64.encodeBase64String(p.getPhoto()));
