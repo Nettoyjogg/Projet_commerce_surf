@@ -80,15 +80,15 @@ public class ClientManagedBean implements Serializable {
 
 		if (cOut != null) {
 		
-
+			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 			// Mettre la liste dans la session
 			Panier panier = (Panier) maSession.getAttribute("panierSession");
-			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+			
 			//
-			// // Mettre la liste dans la session
+			// // Mettre le panier dans la session
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("panierSession", panier);
 
-			// Mettre le administrateur dans la session
+			// Mettre le client dans la session
 
 			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("clientSession", cOut);
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Vous êtes connecté"));

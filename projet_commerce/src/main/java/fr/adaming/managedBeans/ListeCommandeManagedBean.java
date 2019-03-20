@@ -299,8 +299,9 @@ public class ListeCommandeManagedBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de produit choisis"));
 			return "accueilproduit";
 		}
+	
 	}
-
+	
 	// Ici on ajoute le client à la commande
 	public String lierClientCommandeMB() {
 		int verif = 0;
@@ -331,7 +332,7 @@ public class ListeCommandeManagedBean implements Serializable {
 				// Si le client n'est pas co, on ajoute celui qu'on a rentré
 				// dans le formulaire dans commande, mais aussi dans la bd,
 				// (même si il ne valide pas la commande finale, ca reste un
-				// potentiel client :) )
+				// potentiel client  )
 			} else {
 				// Ici, pour toutes les lignes commande du panier, on ajoute le
 				// client à la commande(qui est la même commande pour toute les
@@ -524,12 +525,12 @@ public class ListeCommandeManagedBean implements Serializable {
 			for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 				produit = produitService.consulterProduitService(panier.getListeLigneCommande().get(i).getProduit());
 				test = produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite();
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage("Le produit " + produit.getDesignation() + " ayant l'id "
-								+ produit.getIdProduit() + " n'est plus disponible en stock"));
-				// Et on le supprimer du panier
-				panier.getListeLigneCommande().remove(panier.getListeLigneCommande().get(i));
-
+				if (test < 0) {
+					FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Le produit "
+							+ produit.getDesignation() + " n'est plus disponible en stock, revalidez la commande"));
+					// Et on le supprimer du panier
+					panier.getListeLigneCommande().remove(panier.getListeLigneCommande().get(i));
+				}
 			}
 			// On met le panier modifié dans la session
 			maSession.setAttribute("panierSession", panier);
@@ -543,4 +544,35 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	}
 
+	// Supprimer une ligne de commande du panier
+	public String supprimerlignecommandepanierMB() {
+		// On vérifie si il y a bien un panier, si il n'y en as pas la méthode
+		// est inutile
+		if (maSession.getAttribute("panierSession") == null) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Le panier est déjà vide, il n'y a rien à supprimer"));
+			return "panier";
+		}
+		// Si on en a un, on le récupère, lui et sa liste de ligneCommande,
+		this.panier = (Panier) maSession.getAttribute("panierSession");
+		this.panier.getListeLigneCommande();
+
+		// Comme les produits sont groupés ensemble et que la ligne de commande
+		// n'a pas encore d'id propre c'est par le type de produit
+		// que l'identification de la ligne va être réalisée
+		produit = produitService.consulterProduitService(produit);
+		// on recherche quel ligne contient le produit en question
+		for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
+			if (produit.getDesignation().equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
+
+				this.panier.getListeLigneCommande().remove(i);
+				return "panier";
+			}
+
+		}
+		return "panier";
+	}
+
 }
+	
+	
