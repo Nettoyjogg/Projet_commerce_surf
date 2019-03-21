@@ -59,5 +59,63 @@
 	<h1 style="color: red; text-align: center">
 		<h:messages />
 	</h1>
+	
+	
+	<!-- Support d'aide : https://www.primefaces.org/showcase/ui/data/carousel.xhtml -->
+	<h:form id="form">
+	<p:carousel value="#{caMB.listeCa}" headerText="Categorie" var="ca" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
+        <h:panelGrid columns="2" style="width:100%" columnClasses="label,value">
+            <f:facet name="header">
+                Catégories
+            </f:facet>
+             <h:outputText value="Photo:" />
+			 <h:graphicImage value="#{ca.img}" style="width:100px"/>
+ 
+            <h:outputText value="Id:" />
+            <h:outputText value="#{ca.idCategorie}" />
+ 
+            <h:outputText value="Nom" />
+            <h:outputText value="#{ca.nomCategorie}" />
+ 
+ 
+            <h:outputText value="Description" />
+            <h:outputText value="#{ca.description}" />
+ 
+            <f:facet name="footer">
+                <p:commandButton update=":form:caDetail" oncomplete="PF('caDialog').show()" icon="pi pi-search">
+                    <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
+                </p:commandButton>
+            </f:facet>
+        </h:panelGrid>
+    </p:carousel> 
+	
+	<p:dialog header="Autre" widgetVar="caDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="caDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty caMB.categorie}" columnClasses="label,value">
+                <f:facet name="header">
+                    <h:graphicImage value="#{caMB.categorie.img}" /> 
+                </f:facet>
+ 
+                <h:outputText value="Id:" />
+                <h:outputText value="#{caMB.categorie.idCategorie}" />
+ 
+                <h:outputText value="Year" />
+                <h:outputText value="#{caMB.categorie.nomCategorie}" />
+ 
+                
+ 
+                <h:outputText value="Description" />
+                <h:outputText value="#{caMB.categorie.description}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+	
+	
+	
+	</h:form>
+	
+	
+	
+	
 </h:body>
 </html>
