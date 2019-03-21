@@ -9,6 +9,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import fr.adaming.model.Adresse;
+import fr.adaming.model.Categorie;
 import fr.adaming.model.Client;
 import fr.adaming.model.Panier;
 import fr.adaming.service.ICategorieService;
@@ -32,12 +34,14 @@ public class ClientManagedBean implements Serializable {
 	// Déclaration des attributs
 	private Client client;
 	private HttpSession maSession;
+	private Adresse adresse;
 
 	// déclaration du constructeur
 	public ClientManagedBean() {
 		super();
 		this.client = new Client();
 		this.maSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		this.adresse = new Adresse();
 	}
 
 	// getter et setter
@@ -71,6 +75,15 @@ public class ClientManagedBean implements Serializable {
 		this.produitService = produitService;
 	}
 
+	public Adresse getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
+
+	
 	// méthodes et métiers
 	public String connecterClient() {
 		// sedéconnecter d'une session antérieure aucasou
@@ -80,7 +93,6 @@ public class ClientManagedBean implements Serializable {
 
 		if (cOut != null) {
 		
-			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 			// Mettre la liste dans la session
 			Panier panier = (Panier) maSession.getAttribute("panierSession");
 			
@@ -108,4 +120,31 @@ public class ClientManagedBean implements Serializable {
 
 	}
 
+	
+	public String inscrireClientMB() {
+		//on lie le client à l'adresse inscrite
+		this.client.setAdresse(adresse);
+		Client cAjout = clientService.ajouterClientService(client, adresse);
+		if (cAjout.getIdClient() != 0) {
+
+			// Mettre la liste dans la session
+			Panier panier = (Panier) maSession.getAttribute("panierSession");
+			
+			//
+			// // Mettre le panier dans la session
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("panierSession", panier);
+
+			// Mettre le client dans la session
+
+			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("clientSession", cAjout);
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Vous êtes inscrit et connecté"));
+
+			return "accueilclient";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Erreur d'inscription"));
+
+			return "accueilclient";
+		}
+	}
+	
 }
