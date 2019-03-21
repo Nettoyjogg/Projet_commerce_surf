@@ -1,0 +1,25 @@
+/*    *****************************    Body   **************************************** */
+
+
+body {
+background-image:url(../resources/images/fondsable.jpg)!important ;
+background-size: 85%;
+}
+
+/*    *****************************     Affichage des listes **************************************** */
+.ui-carousel {
+    position: relative;
+    padding: 1px;
+    font-family: 'MS Sans Serif', Geneva, sans-serif;
+}
+
+
+.ui-panelgrid .ui-panelgrid-footer {
+     text-align: center;
+    padding: 2px 5px;
+}
+
+.ui-carousel .ui-carousel-header {
+	background-color:#00cccc;
+	text-align: center;
+	}

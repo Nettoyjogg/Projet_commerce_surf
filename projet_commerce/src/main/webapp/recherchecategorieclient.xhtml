@@ -62,8 +62,9 @@
 	
 	
 	<!-- Support d'aide : https://www.primefaces.org/showcase/ui/data/carousel.xhtml -->
+	<!-- C'est un essai on pourra le virer tkt -->
 	<h:form id="form">
-	<p:carousel value="#{caMB.listeCa}" headerText="Categorie" var="ca" itemStyle="height:200px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
+	<p:carousel value="#{caMB.listeCa}" headerText="Categorie" var="ca"  itemStyle="width:400px;height:400px;text-align:center" numVisible="1" easing="easeOutBounce" style="width:250px" circular="true">
         <h:panelGrid columns="2" style="width:100%" columnClasses="label,value">
             <f:facet name="header">
                 Catégories
@@ -99,7 +100,7 @@
                 <h:outputText value="Id:" />
                 <h:outputText value="#{caMB.categorie.idCategorie}" />
  
-                <h:outputText value="Year" />
+                <h:outputText value="Nom" />
                 <h:outputText value="#{caMB.categorie.nomCategorie}" />
  
                 
