@@ -24,3 +24,7 @@ background-size: 85%;
 	text-align: center;
 	}
 
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
+	background: url(../resources/images/loupe.jpg) no-repeat center center!important;
+	
+}

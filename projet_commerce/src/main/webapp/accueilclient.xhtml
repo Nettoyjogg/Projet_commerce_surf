@@ -57,7 +57,7 @@
             <h:outputLabel value="Description" style="color:black"/>
             <h:outputText value="#{ca.description}" />
                     <f:facet name="footer">
-                 <p:commandButton update=":form:caDetail" oncomplete="PF('caDialog').show()" value="Agrandir">
+                 <p:commandButton update=":form:caDetail" oncomplete="PF('caDialog').show()">
                     <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
                 </p:commandButton>
         </f:facet>
