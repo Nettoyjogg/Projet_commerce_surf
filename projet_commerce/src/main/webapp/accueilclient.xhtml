@@ -43,8 +43,9 @@
 	<!-- Test Jogg -->
 	
 <h:form id="form">
-    <p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories" var="ca" itemStyle="text-align:center" responsive="true">
-        <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+
+    <p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories" var="ca" itemStyle="text-align:center" responsive="true" >
+        <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"  layout="grid" styleClass="ui-panelgrid-blank"  >
             <f:facet name="header">
                 <h:graphicImage value="#{ca.img}" style="max-height:350px"/> 
             </f:facet>
@@ -63,8 +64,8 @@
         </p:panelGrid>
  
         </p:carousel>
-        
-        
+       
+    
         
         
         <!-- Correspon dau bonton pour chaque image -->
