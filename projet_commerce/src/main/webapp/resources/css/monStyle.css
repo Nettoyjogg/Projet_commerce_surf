@@ -6,7 +6,7 @@ background-image:url(../resources/images/fondsable.jpg)!important ;
 background-size: 85%;
 }
 
-/*    *****************************     Affichage des listes **************************************** */
+/*    *****************************     Affichage des listes carousel **************************************** */
 .ui-carousel {
     position: relative;
     padding: 1px;
@@ -28,3 +28,14 @@ background-size: 85%;
 	background: url(../resources/images/loupe.jpg) no-repeat center center!important;
 	
 }
+
+/*    *****************************     Affichage des listes carousel **************************************** */
+    .ui-datatable .ui-datatable-header {
+        text-align: right !important;
+    }
+     
+    .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox {
+        display: none;
+    }
+     
+     

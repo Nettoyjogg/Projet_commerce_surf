@@ -12,6 +12,7 @@
 	
 </h:head>
 <h:body>
+			<h:outputStylesheet library="css" name="monStyle.css"  />
 
 	<h:form>
 	<ui:include src="/resources/templates/headerclient.xhtml" />
@@ -90,22 +91,22 @@
         </h:panelGrid>
     </p:carousel> 
 	
-	<p:dialog header="Autre" widgetVar="caDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+	<p:dialog header="Categories" widgetVar="caDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
         <p:outputPanel id="caDetail" style="text-align:center;">
             <p:panelGrid  columns="2" rendered="#{not empty caMB.categorie}" columnClasses="label,value">
                 <f:facet name="header">
-                    <h:graphicImage value="#{caMB.categorie.img}" /> 
+                    <h:graphicImage value="#{caMB.categorie.img}" style="max-height:500px"/> 
                 </f:facet>
  
-                <h:outputText value="Id:" />
+                <h:outputLabel value="Id" style="color:blue"/>
                 <h:outputText value="#{caMB.categorie.idCategorie}" />
  
-                <h:outputText value="Nom" />
+                <h:outputLabel value="Nom" style="color:blue"/>
                 <h:outputText value="#{caMB.categorie.nomCategorie}" />
  
                 
  
-                <h:outputText value="Description" />
+                <h:outputLabel value="Description" style="color:blue"/>
                 <h:outputText value="#{caMB.categorie.description}" />
             </p:panelGrid>
         </p:outputPanel>

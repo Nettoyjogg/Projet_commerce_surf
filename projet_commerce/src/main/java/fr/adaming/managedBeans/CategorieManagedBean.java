@@ -32,6 +32,7 @@ public class CategorieManagedBean implements Serializable {
 	private UploadedFile image;
 	private List<Categorie> listeCa;
 
+
 	// Constructeur vide
 	public CategorieManagedBean() {
 		this.categorie = new Categorie();
