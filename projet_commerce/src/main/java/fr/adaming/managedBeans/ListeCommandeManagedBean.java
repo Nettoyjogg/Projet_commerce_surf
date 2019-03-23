@@ -23,6 +23,7 @@ import fr.adaming.model.Produit;
 import fr.adaming.service.IClientService;
 import fr.adaming.service.ICommandeService;
 import fr.adaming.service.ILigneCommandeService;
+import fr.adaming.service.IPDFService;
 import fr.adaming.service.IProduitService;
 import fr.adaming.service.SendMailService;
 
@@ -39,6 +40,8 @@ public class ListeCommandeManagedBean implements Serializable {
 	private IProduitService produitService;
 	@ManagedProperty(value = "#{cService}")
 	private IClientService clientService;
+	@ManagedProperty("#{pdfService}")
+	private IPDFService pdfService;
 
 	// Attribut
 	private LigneCommande ligneCommande;
@@ -51,6 +54,7 @@ public class ListeCommandeManagedBean implements Serializable {
 	private Client client;
 	private Adresse adresse;
 	private Panier panier;
+	private static int numero;
 
 	// Constructeur vide
 	public ListeCommandeManagedBean() {
@@ -70,6 +74,14 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	public HttpSession getMaSession() {
 		return maSession;
+	}
+
+	public static int getNumero() {
+		return numero;
+	}
+
+	public void setPdfService(IPDFService pdfService) {
+		this.pdfService = pdfService;
 	}
 
 	public Panier getPanier() {
@@ -299,9 +311,9 @@ public class ListeCommandeManagedBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pas de produit choisis"));
 			return "accueilproduit";
 		}
-	
+
 	}
-	
+
 	// Ici on ajoute le client à la commande
 	public String lierClientCommandeMB() {
 		int verif = 0;
@@ -332,7 +344,7 @@ public class ListeCommandeManagedBean implements Serializable {
 				// Si le client n'est pas co, on ajoute celui qu'on a rentré
 				// dans le formulaire dans commande, mais aussi dans la bd,
 				// (même si il ne valide pas la commande finale, ca reste un
-				// potentiel client  )
+				// potentiel client )
 			} else {
 				// Ici, pour toutes les lignes commande du panier, on ajoute le
 				// client à la commande(qui est la même commande pour toute les
@@ -459,14 +471,28 @@ public class ListeCommandeManagedBean implements Serializable {
 				// LE message du mail
 				message = "Bonjour Mme/Mr " + coOut.getClient().getNomClient()
 						+ "\n Nous vous informons que votre commande: " + coOut.getIdCommande() + " passée le "
-						+ coOut.getDateCommande() + " a bien été validée.\n Nous esperons que vos articles: "
-						+ panier.getListeLigneCommande() + " vous plairont. \n A bientot !";
+						+ coOut.getDateCommande()
+						+ " a bien été validée.\n Nous esperons que vos articles vous plairont (cf, pdf). \n A bientot !";
+				// Préparation du PDF
+				List<Produit> listeProduit = new ArrayList<>();
+				for (int z = 0; z < panier.getListeLigneCommande().size(); z++) {
+					Produit prodAjout = panier.getListeLigneCommande().get(z).getProduit();
+					prodAjout.setQuantite(panier.getListeLigneCommande().get(z).getQuantite());
+					listeProduit.add(prodAjout);
+				}
+				// Recup du client
+				Client client = panier.getListeLigneCommande().get(0).getCommande().getClient();
 				// On "test" l'envoi du mail
 				try {
+					// création du pdf
+					pdfService.creerPDF(listeProduit, client, numero);
+
 					SendMailService sm = new SendMailService();
 					sm.sendMail(coOut.getClient().getEmail(), message);
+					// Création du produit
+
 					// si le mail est bien envoyé, on retire les quantités aux
-					// produits de la bd
+					// produits de la bd et on update ,umero
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 						produit.setQuantite(
 								produit.getQuantite() - panier.getListeLigneCommande().get(i).getQuantite());
@@ -474,6 +500,7 @@ public class ListeCommandeManagedBean implements Serializable {
 											// test
 						produitService.modifierProduitService(produit, admin);
 					}
+					numero++;
 					// Enfin, on crée un nouveau panier qu'on met dans la
 					// session !
 					this.panier = new Panier();
@@ -487,11 +514,15 @@ public class ListeCommandeManagedBean implements Serializable {
 							new FacesMessage("message non envoyé, annulation validation commande"));
 					// Du coup, on annule la commande, et on supprime la
 					// commande et ligne commande ajoutée dans la bd
+					// création du pdf
+					pdfService.creerPDFEchec(listeProduit, client, numero);
 					for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 						ligneCommandeService.supprimerLigneCommandeService(panier.getListeLigneCommande().get(i));
 					}
 					commandeService.supprimerCommandeService(coOut);
+
 					// On set le panier (qui n'a pas changé normalement
+					numero++;
 					maSession.setAttribute("panierSession", panier);
 					return "panier";
 				}
@@ -574,5 +605,3 @@ public class ListeCommandeManagedBean implements Serializable {
 	}
 
 }
-	
-	
