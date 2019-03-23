@@ -128,6 +128,8 @@
             <f:facet name="filter">
                 <p:selectOneMenu onchange="PF('categoriesTable').filter()" style="width:100%; box-sizing: border-box;" >
                      <f:selectItems itemLabel="#{ca.nomCategorie}" itemValue="#{ca.idCategorie}" value="#{caMB.listeCa}" var="ca"></f:selectItems>
+                     				<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}"
+						update="formCa" />
                 </p:selectOneMenu>
             </f:facet>
             <h:outputText value="#{ca.nomCategorie}" />
@@ -167,7 +169,7 @@
         </p:outputPanel>
     </p:dialog>
      
-     
+ 
      
 </h:form>
 	
