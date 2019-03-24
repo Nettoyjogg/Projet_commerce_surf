@@ -97,7 +97,7 @@
 				</p:spinner>
 				
 			<p:commandButton value="Ajouter un produit au panier"
-					action="#{lcMB.ajouterLigneCommandeMB}">
+					action="#{lcMB.ajouterLigneCommandeMB}" update="formP">
 					<f:setPropertyActionListener value="#{pMB.produit.idProduit}"
 						target="#{lcMB.produit.idProduit}" />
 

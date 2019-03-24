@@ -67,6 +67,14 @@
 				<h:outputText value="#{ca.description}" />
 			</p:column>
 
+			<p:column headerText="Opération">
+			<p:commandButton value="Supprimer"
+			action="#{caMB.supprimerCategorieMB}" update="formCa">
+			<f:setPropertyActionListener value="#{ca.idCategorie}"
+			target="#{caMB.categorie.idCategorie}" />
+
+			</p:commandButton>
+			</p:column>
 
 
 
