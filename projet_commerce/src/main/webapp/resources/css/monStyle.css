@@ -29,6 +29,12 @@ background-size: 85%;
 	
 }
 
+element.style{
+	max-height:300px!important;
+	max-width:150px!important;
+	
+}
+
 /*    *****************************     Affichage des listes carousel **************************************** */
     .ui-datatable .ui-datatable-header {
         text-align: right !important;
