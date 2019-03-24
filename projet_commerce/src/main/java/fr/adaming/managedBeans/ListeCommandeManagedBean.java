@@ -56,6 +56,8 @@ public class ListeCommandeManagedBean implements Serializable {
 	private Panier panier;
 	private static int numero;
 	private List<LigneCommande> filteredListeLigneCommande;
+	private final static int sort = 1;
+	private static int total;
 
 	// Constructeur vide
 	public ListeCommandeManagedBean() {
@@ -75,6 +77,14 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	public HttpSession getMaSession() {
 		return maSession;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public int getSort() {
+		return sort;
 	}
 
 	public List<LigneCommande> getFilteredListeLigneCommande() {
@@ -189,11 +199,13 @@ public class ListeCommandeManagedBean implements Serializable {
 	// exécutée après l'instanciation de l'objet.
 	public void init() {
 		maSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+
 	}
 
 	// Méthodes :
 
 	public String ajouterLigneCommandeMB() {
+		int total2=0;
 		int test = 0;
 		// Ici on check si on a déjà un panier dans la session
 		if (maSession.getAttribute("panierSession") != null) {
@@ -278,8 +290,17 @@ public class ListeCommandeManagedBean implements Serializable {
 				this.listeLigneCommande.add(ligneCommande);
 				panier.getListeLigneCommande().addAll(listeLigneCommande);
 			}
+
+			try {
+				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
+					total2 = total2 + (int) panier.getListeLigneCommande().get(i).getPrix();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			// Enfin on met le panier dans la session et on retourne à l'accueil
 			// panier
+			total=total2;
 			maSession.setAttribute("panierSession", panier);
 			return "panier";
 

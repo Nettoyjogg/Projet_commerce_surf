@@ -22,13 +22,13 @@
 
 	<h:form id="formLC" rendered="true">
 
-		<p:dataTable id="tableProduit" var="lc"
+		<p:dataTable id="tableProduit" var="lc" sortBy="#{lcMB.sort}"
 			value="#{sessionScope.panierSession.listeLigneCommande}"
 			widgetVar="lcTable" multiViewState="true" rows="10" paginator="true"
 			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="2,4,10" selectionMode="single"
 			selection="#{lcMB.ligneCommande}" rowKey="#{lc.produit}"
-			emptyMessage="CESTDELAMERDECEPUTAINDEPROJET"
+			emptyMessage="Votre panier est vide "
 			filteredValue="#{lcMB.filteredListeLigneCommande}">
 
 			<f:facet name="header">
@@ -38,19 +38,6 @@
 						style="width:150px" placeholder="Enter keyword" />
 				</p:outputPanel>
 			</f:facet>
-
-			<p:ajax event="rowSelect" update=":formLC:lcDetail"
-				oncomplete="PF('lcDialog').show()" />
-
-
-
-			<p:column headerText="Quantité" sortBy="#{lc.quantite}">
-				<h:outputText value="#{lc.quantite}" />
-			</p:column>
-
-			<p:column headerText="Prix" sortBy="#{lc.prix}">
-				<h:outputText value="#{lc.prix}" />
-			</p:column>
 
 			<p:column headerText="Nom Produit"
 				filterBy="#{lc.produit.designation}"
@@ -79,46 +66,36 @@
 					</p:selectOneMenu>
 				</f:facet>
 				<h:outputText value="#{lc.produit.categorie.nomCategorie}" />
-				
 			</p:column>
-			
+
+			<p:column headerText="Quantité" sortBy="#{lc.quantite}">
+				<h:outputText value="#{lc.quantite}" />
+			</p:column>
+
+			<p:column headerText="Prix" sortBy="#{lc.prix}">
+				<h:outputText value="#{lc.prix}" />
+			</p:column>
+
 			<p:column headerText="Supprimer ce produit du panier">
-			<p:commandButton value="Supprimer"
-			action="#{lcMB.supprimerlignecommandepanierMB}" update="formLC">
-			<f:setPropertyActionListener value="#{lc.produit.idProduit}"
-			target="#{lcMB.produit.idProduit}" />
+				<p:commandButton value="Supprimer"
+					action="#{lcMB.supprimerlignecommandepanierMB}" update="formLC">
+					<f:setPropertyActionListener value="#{lc.produit.idProduit}"
+						target="#{lcMB.produit.idProduit}" />
 
-			</p:commandButton>
+				</p:commandButton>
 			</p:column>
+			<p:summaryRow>
+				<p:column colspan="3" style="text-align:right">
+					<h:outputText value="Total:" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{lcMB.total}">
+						<f:convertNumber type="currency" currencySymbol="€" />
+					</h:outputText>
+				</p:column>
+			</p:summaryRow>
+
 		</p:dataTable>
-
-		<p:dialog header="Produits" widgetVar="lcDialog" modal="true"
-			showEffect="fade" hideEffect="fade" resizable="false">
-			<p:outputPanel id="lcDetail" style="text-align:center;">
-				<p:panelGrid columns="2" rendered="#{not empty lcMB.ligneCommande}"
-					columnClasses="label,value">
-					<f:facet name="header">
-						<h:graphicImage value="#{lcMB.ligneCommande.produit.img}"
-							style="max-height:500px" />
-					</f:facet>
-
-					<h:outputLabel value="Quantité" style="color:blue" />
-					<h:outputText value="#{lcMB.ligneCommande.quantite}" />
-
-					<h:outputLabel value="Prix" style="color:blue" />
-					<h:outputText value="#{lcMB.ligneCommande.prix} €" />
-
-					<h:outputLabel value="Produit" style="color:blue" />
-					<h:outputText value="#{lcMB.ligneCommande.produit.designation}" />
-
-					<h:outputLabel value="Categorie" style="color:blue" />
-					<h:outputText
-						value="#{lcMB.ligneCommande.produit.categorie.nomCategorie}" />
-
-				</p:panelGrid>
-			</p:outputPanel>
-		</p:dialog>
-
 
 
 	</h:form>
