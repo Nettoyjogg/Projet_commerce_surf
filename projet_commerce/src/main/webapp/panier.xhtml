@@ -43,6 +43,7 @@
 				oncomplete="PF('lcDialog').show()" />
 
 
+
 			<p:column headerText="Quantité" sortBy="#{lc.quantite}">
 				<h:outputText value="#{lc.quantite}" />
 			</p:column>
@@ -78,8 +79,17 @@
 					</p:selectOneMenu>
 				</f:facet>
 				<h:outputText value="#{lc.produit.categorie.nomCategorie}" />
+				
 			</p:column>
+			
+			<p:column headerText="Supprimer ce produit du panier">
+			<p:commandButton value="Supprimer"
+			action="#{lcMB.supprimerlignecommandepanierMB}" update="formLC">
+			<f:setPropertyActionListener value="#{lc.produit.idProduit}"
+			target="#{lcMB.produit.idProduit}" />
 
+			</p:commandButton>
+			</p:column>
 		</p:dataTable>
 
 		<p:dialog header="Produits" widgetVar="lcDialog" modal="true"
