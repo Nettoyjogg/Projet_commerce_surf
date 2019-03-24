@@ -57,11 +57,12 @@ public class Mail {
 			multipart.addBodyPart(partieMessage);
 
 			// Pièces jointes
+			String chemin = "C:\\Users\\IN-BR-006\\PDFeCommerce\\FicheProduit"
+					+ Integer.toString(ListeCommandeManagedBean.getNumero()) + ".pdf";	
 			partieMessage = new MimeBodyPart();
-			DataSource source = new FileDataSource("C:\\Users\\IN-BR-006\\PDFeCommerce\\FicheProduit"
-					+ Integer.toString(ListeCommandeManagedBean.getNumero()) + ".pdf");
+			DataSource source = new FileDataSource(chemin);
 			partieMessage.setDataHandler(new DataHandler(source));
-			partieMessage.setFileName("Fiche Produit");
+			partieMessage.setFileName("Commande.pdf");
 			multipart.addBodyPart(partieMessage);
 			message.setContent(multipart);
 

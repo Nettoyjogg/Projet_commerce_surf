@@ -111,6 +111,7 @@ public class PDFService implements IPDFService {
 					"Un client n'a pas pu valider sa commande, car son mail ne fonctionnait pas, elle a donc été annulé. Recontactez le "));
 			doc.add(new Paragraph(" "));
 			doc.add(new Paragraph(" Les produits qu'il voulait acheter sont ci-dessous :  "));
+			doc.add(new Paragraph(" "));
 
 			// ajout du tableau (méthode en dessous)
 			for (int i = 0; i < produitListe.size(); i++) {
