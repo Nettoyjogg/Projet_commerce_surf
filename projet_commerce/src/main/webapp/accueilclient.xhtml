@@ -17,26 +17,6 @@
 
 	</h:form>
 
-	<h:form rendered="false">
-		<p:dataTable var="ca" value="#{caMB.listeCa}">
-			<p:column headerText="ID">
-				<h:outputText value="#{ca.idCategorie}" />
-			</p:column>
-
-			<p:column headerText="Nom">
-				<h:outputText value="#{ca.nomCategorie}" />
-			</p:column>
-
-			<p:column headerText="Photo">
-				<h:graphicImage value="#{ca.img}" />
-			</p:column>
-
-			<p:column headerText="Description">
-				<h:outputText value="#{ca.description}" />
-			</p:column>
-
-		</p:dataTable>
-	</h:form>
 	<h1 style="color: blue; text-align: center;">
 		<h:messages />
 	</h1>
@@ -128,7 +108,8 @@
 			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="2,4,10" selectionMode="single"
 			selection="#{caMB.categorie}" rowKey="#{ca.idCategorie}"
-			emptyMessage="Non, tkt" filteredValue="#{caMB.filteredListeCa}">
+			emptyMessage="Pas de catégories trouvées"
+			filteredValue="#{caMB.filteredListeCa}">
 
 			<f:facet name="header">
 				<p:outputPanel>
@@ -155,9 +136,6 @@
 						<f:selectItem itemLabel="Select One" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{caMB.nomCategorie}" />
-						<!--                      <f:selectItems itemLabel="#{ca.nomCategorie}" itemValue="#{ca.idCategorie}" value="#{caMB.listeCa}" var="ca"></f:selectItems> -->
-						<!--                      				<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}" -->
-						<!-- 						update="formCa" /> -->
 					</p:selectOneMenu>
 				</f:facet>
 				<h:outputText value="#{ca.nomCategorie}" />
@@ -167,7 +145,8 @@
 				<h:graphicImage value="#{ca.img}" style="max-height:500px" />
 			</p:column>
 
-			<p:column headerText="Description">
+			<p:column headerText="Description" filterBy="#{ca.description}"
+				sortBy="#{ca.description}" filterMatchMode="contains">
 				<h:outputText value="#{ca.description}" />
 			</p:column>
 

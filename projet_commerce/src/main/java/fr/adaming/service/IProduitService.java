@@ -24,12 +24,6 @@ public interface IProduitService {
 
 	public List<Produit> consulterProduitCategorieService(Produit p);
 	
-	
-	
-
+	public List<String> getDesignationProduit();
+		
 }
-// Consulter les produits sélectionnés
-// Chercher des produits par mot clé
-// Ajouter un produit avec une quantité au panier
-// Supprimer un produit du panier
-// Enregistrer le client et la commande des produits de son panier.

@@ -15,7 +15,7 @@ public class ProduitDaoImpl implements IProduitDao {
 
 	@Autowired
 	private SessionFactory sf;
-	
+
 	// le setter pour l'injection de dépendance
 	public void setSf(SessionFactory sf) {
 		this.sf = sf;
@@ -23,13 +23,13 @@ public class ProduitDaoImpl implements IProduitDao {
 
 	@Override
 	public List<Produit> afficherProduitDao() {
-		//récupérer le bus (session de hibernate
-		Session s=sf.getCurrentSession();
-		
-		String req="FROM Produit as p";
-		
+		// récupérer le bus (session de hibernate
+		Session s = sf.getCurrentSession();
+
+		String req = "FROM Produit as p";
+
 		Query queryHQL = s.createQuery(req);
-		
+
 		@SuppressWarnings("unchecked")
 		List<Produit> listeProduit = queryHQL.list();
 
@@ -41,29 +41,21 @@ public class ProduitDaoImpl implements IProduitDao {
 
 		return listeProduit;
 	}
-	
-	
-	
-		
-
-	
 
 	@Override
 	public Produit ajouterProduitDao(Produit p) {
-		//récupérer le bus (session de hibernate
-		Session s=sf.getCurrentSession();
-		
+		// récupérer le bus (session de hibernate
+		Session s = sf.getCurrentSession();
+
 		s.save(p);
-		
+
 		return p;
 	}
 
-
-	
 	@Override
 	public int modifierProduitDao(Produit p) {
-		//récupérer le bus (session de hibernate
-		Session s=sf.getCurrentSession();
+		// récupérer le bus (session de hibernate
+		Session s = sf.getCurrentSession();
 		// requete HQL
 		String req = "UPDATE Produit as p SET p.designation=:pDesignation, p.description=:pDescription, p.prix=:pPrix, p.quantite=:pQuantite, p.selectionne=:pSelectionne, p.photo=:pPhoto, p.categorie.idCategorie=:pIdCategorie WHERE p.idProduit=:pId";
 		// récupérer un objet query
@@ -77,39 +69,37 @@ public class ProduitDaoImpl implements IProduitDao {
 		query.setParameter("pPhoto", p.getPhoto());
 		query.setParameter("pIdCategorie", p.getCategorie().getIdCategorie());
 		query.setParameter("pId", p.getIdProduit());
-		
+
 		return query.executeUpdate();
-		}
-	
+	}
 
 	@Override
 	public int supprimerProduitDao(Produit p) {
-		//récupérer le bus (session de hibernate
-				Session s=sf.getCurrentSession();
+		// récupérer le bus (session de hibernate
+		Session s = sf.getCurrentSession();
 		// requete hql
 		String req = "DELETE FROM Produit as p WHERE p.idProduit=:pId";
 		// récupérer un objet query
 		Query query = s.createQuery(req);
 
 		query.setParameter("pId", p.getIdProduit());
-		
+
 		return query.executeUpdate();
 	}
 
 	@Override
 	public Produit consulterProduitDao(Produit p) {
-		Session s=sf.getCurrentSession();
-		
-		String req="FROM Produit as p WHERE p.idProduit=:pId";
-		
-		
+		Session s = sf.getCurrentSession();
+
+		String req = "FROM Produit as p WHERE p.idProduit=:pId";
+
 		Query queryHQL = s.createQuery(req);
-		
-		//passage des params
+
+		// passage des params
 		queryHQL.setParameter("pId", p.getIdProduit());
-	
-		return  (Produit) queryHQL.uniqueResult();
-	
+
+		return (Produit) queryHQL.uniqueResult();
+
 	}
 
 	@Override
@@ -138,13 +128,26 @@ public class ProduitDaoImpl implements IProduitDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Produit> consulterProduitCategorieDao(Produit p) {
-		//récupérer le bus (session de hibernate
-		Session s=sf.getCurrentSession();
+		// récupérer le bus (session de hibernate
+		Session s = sf.getCurrentSession();
 		String reqListe = "SELECT p FROM Produit as p WHERE p.categorie.idCategorie=:pIdCA";
 		Query queryListe = s.createQuery(reqListe);
 		queryListe.setParameter("pIdCA", p.getCategorie().getIdCategorie());
-		
+
 		return (List<Produit>) queryListe.list();
+	}
+
+	@Override
+	public List<String> consulterProduitDesignationProduitParIDDao() {
+		Session s = sf.getCurrentSession();
+		// Requete
+		Query req = s.createQuery("SELECT p.designation FROM Produit as p");
+
+		// Répérer un objet query
+
+		List<String> ListeProduit = req.list();
+
+		return ListeProduit;
 	}
 
 }

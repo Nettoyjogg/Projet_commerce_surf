@@ -55,6 +55,7 @@ public class ListeCommandeManagedBean implements Serializable {
 	private Adresse adresse;
 	private Panier panier;
 	private static int numero;
+	private List<LigneCommande> filteredListeLigneCommande;
 
 	// Constructeur vide
 	public ListeCommandeManagedBean() {
@@ -74,6 +75,14 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	public HttpSession getMaSession() {
 		return maSession;
+	}
+
+	public List<LigneCommande> getFilteredListeLigneCommande() {
+		return filteredListeLigneCommande;
+	}
+
+	public void setFilteredListeLigneCommande(List<LigneCommande> filteredListeLigneCommande) {
+		this.filteredListeLigneCommande = filteredListeLigneCommande;
 	}
 
 	public static int getNumero() {

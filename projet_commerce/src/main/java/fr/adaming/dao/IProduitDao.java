@@ -26,6 +26,8 @@ public interface IProduitDao {
 	public Produit ajouterUnProduitQuantitePanierDao(Produit p);
 	
 	public int supprimerProduitPanierDao(Produit p);
+
+	public List<String> consulterProduitDesignationProduitParIDDao();
 	
 	
 

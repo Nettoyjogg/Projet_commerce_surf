@@ -13,20 +13,19 @@ import fr.adaming.model.Categorie;
 import fr.adaming.model.Produit;
 
 @Service("pService")
-@Transactional //ici toute les méthodes de la classe seront transactional ==> peuvent gérer les transaction 
-//on peut le mettre sur Dao mais sur Service c'est la bonne méthode en terme d'économie de place 
+@Transactional // ici toute les méthodes de la classe seront transactional ==>
+				// peuvent gérer les transaction
+// on peut le mettre sur Dao mais sur Service c'est la bonne méthode en terme
+// d'économie de place
 public class ProduitServiceImpl implements IProduitService {
 
-	
-	
 	// transformation de l'association UML en JAVA
-	@Autowired //utilise by type de nom
+	@Autowired // utilise by type de nom
 	IProduitDao produitDao;
 
-	@Autowired //utilise by type de nom
+	@Autowired // utilise by type de nom
 	ICategorieDao categorieDao;
 
-	
 	public void setProduitDao(IProduitDao produitDao) {
 		this.produitDao = produitDao;
 	}
@@ -95,6 +94,12 @@ public class ProduitServiceImpl implements IProduitService {
 	@Override
 	public Produit consulterProduitService(Produit p) {
 		return produitDao.consulterProduitDao(p);
+	}
+
+	@Override
+	public List<String> getDesignationProduit() {
+		return produitDao.consulterProduitDesignationProduitParIDDao();
+
 	}
 
 }

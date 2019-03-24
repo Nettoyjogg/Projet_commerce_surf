@@ -16,30 +16,103 @@
 	</h:form>
 	<h1 style="color: blue; text-align: center;">Liste des catégories</h1>
 
-	<h:form>
-		<p:dataTable var="lc"
-			value="#{sessionScope.panierSession.listeLigneCommande}">
-			<p:column headerText="ID">
-				<h:outputText value="#{lc.idLigneCommande}" />
-			</p:column>
-
-			<p:column headerText="Quantité">
-				<h:outputText value="#{lc.quantite}" />
-			</p:column>
-
-			<p:column headerText="Prix">
-				<h:outputText value="#{lc.prix}" />
-			</p:column>
-
-			<p:column headerText="id Produit">
-				<h:outputText value="#{lc.produit.idProduit}" />
-			</p:column>
-
-
-		</p:dataTable>
-	</h:form>
 	<h1 style="color: blue; text-align: center;">
 		<h:messages />
 	</h1>
+
+	<h:form id="formLC" rendered="true">
+
+		<p:dataTable id="tableProduit" var="lc"
+			value="#{sessionScope.panierSession.listeLigneCommande}"
+			widgetVar="lcTable" multiViewState="true" rows="10" paginator="true"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="2,4,10" selectionMode="single"
+			selection="#{lcMB.ligneCommande}" rowKey="#{lc.produit}"
+			emptyMessage="CESTDELAMERDECEPUTAINDEPROJET"
+			filteredValue="#{lcMB.filteredListeLigneCommande}">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="PF('lcTable').filter()"
+						style="width:150px" placeholder="Enter keyword" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:ajax event="rowSelect" update=":formLC:lcDetail"
+				oncomplete="PF('lcDialog').show()" />
+
+
+			<p:column headerText="Quantité" sortBy="#{lc.quantite}">
+				<h:outputText value="#{lc.quantite}" />
+			</p:column>
+
+			<p:column headerText="Prix" sortBy="#{lc.prix}">
+				<h:outputText value="#{lc.prix}" />
+			</p:column>
+
+			<p:column headerText="Nom Produit"
+				filterBy="#{lc.produit.designation}"
+				sortBy="#{lc.produit.designation}" filterMatchMode="exact">
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('lcTable').filter()"
+						style="width:100%; box-sizing: border-box;">
+						<f:selectItem itemLabel="Tous" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{pMB.designationProduit}" />
+					</p:selectOneMenu>
+				</f:facet>
+				<h:outputText value="#{lc.produit.designation}" />
+			</p:column>
+
+			<p:column headerText="Nom Categorie Produit"
+				filterBy="#{lc.produit.categorie.nomCategorie}"
+				sortBy="#{lc.produit.categorie.nomCategorie}"
+				filterMatchMode="exact">
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('lcTable').filter()"
+						style="width:100%; box-sizing: border-box;">
+						<f:selectItem itemLabel="Tous" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{caMB.nomCategorie}" />
+					</p:selectOneMenu>
+				</f:facet>
+				<h:outputText value="#{lc.produit.categorie.nomCategorie}" />
+			</p:column>
+
+		</p:dataTable>
+
+		<p:dialog header="Produits" widgetVar="lcDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="lcDetail" style="text-align:center;">
+				<p:panelGrid columns="2" rendered="#{not empty lcMB.ligneCommande}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<h:graphicImage value="#{lcMB.ligneCommande.produit.img}"
+							style="max-height:500px" />
+					</f:facet>
+
+					<h:outputLabel value="Quantité" style="color:blue" />
+					<h:outputText value="#{lcMB.ligneCommande.quantite}" />
+
+					<h:outputLabel value="Prix" style="color:blue" />
+					<h:outputText value="#{lcMB.ligneCommande.prix} €" />
+
+					<h:outputLabel value="Produit" style="color:blue" />
+					<h:outputText value="#{lcMB.ligneCommande.produit.designation}" />
+
+					<h:outputLabel value="Categorie" style="color:blue" />
+					<h:outputText
+						value="#{lcMB.ligneCommande.produit.categorie.nomCategorie}" />
+
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+
+
+	</h:form>
+
+
 </h:body>
 </html>

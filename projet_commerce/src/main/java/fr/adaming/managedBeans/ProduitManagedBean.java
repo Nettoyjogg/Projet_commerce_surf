@@ -22,10 +22,10 @@ import fr.adaming.service.IProduitService;
 public class ProduitManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	//Transformation de l'association UML en JAVA 
-	@ManagedProperty(value="#{pService}") //utilise by name
+	// Transformation de l'association UML en JAVA
+	@ManagedProperty(value = "#{pService}") // utilise by name
 	private IProduitService produitService;
-	@ManagedProperty(value="#{caService}")
+	@ManagedProperty(value = "#{caService}")
 	private ICategorieService categorieService;
 
 	// Attribut
@@ -37,6 +37,7 @@ public class ProduitManagedBean implements Serializable {
 	private UploadedFile image;
 	private List<Produit> listeProduit;
 	private List<Categorie> listeCategorie;
+	private List<Produit> filteredListeProduit;
 
 	// déclaration du constructeur vide
 	public ProduitManagedBean() {
@@ -57,9 +58,20 @@ public class ProduitManagedBean implements Serializable {
 	}
 
 	// getter et setter
+	public List<String> getDesignationProduit() {
+		return produitService.getDesignationProduit();
+	}
 
 	public Produit getProduit() {
 		return produit;
+	}
+
+	public List<Produit> getFilteredListeProduit() {
+		return filteredListeProduit;
+	}
+
+	public void setFilteredListeProduit(List<Produit> filteredListeProduit) {
+		this.filteredListeProduit = filteredListeProduit;
 	}
 
 	public List<Produit> getListeProduit() {
@@ -106,8 +118,6 @@ public class ProduitManagedBean implements Serializable {
 		this.listeCategorie = listeCategorie;
 	}
 
-	
-	
 	public void setProduitService(IProduitService produitService) {
 		this.produitService = produitService;
 	}
@@ -124,7 +134,7 @@ public class ProduitManagedBean implements Serializable {
 		Produit pAjout = produitService.ajouterProduitService(produit, categorie, administrateur);
 		if (pAjout.getIdProduit() != 0) {
 			// Récuperer la liste des produits
-			
+
 			List<Produit> listep = produitService.afficherProduitService(administrateur);
 
 			// Mettre à jour la liste dans la sessin
@@ -139,11 +149,11 @@ public class ProduitManagedBean implements Serializable {
 	}
 
 	public String modifierProduitMB() {
-		if(this.image!=null){
+		if (this.image != null) {
 			this.produit.setPhoto(this.image.getContents());
 		}
 		categorie = categorieService.consulterCategorieParIDService(categorie);
-	
+
 		this.produit.setCategorie(categorie);
 		int verif = produitService.modifierProduitService(produit, administrateur);
 		if (verif != 0) {
@@ -195,7 +205,7 @@ public class ProduitManagedBean implements Serializable {
 			indice = true;
 		}
 	}
-	
+
 	public void rechercherProduitClientParIdMB() {
 		this.produit = produitService.consulterProduitService(produit);
 		this.produit.setImg("data:image/png;base64," + Base64.encodeBase64String(produit.getPhoto()));
