@@ -40,7 +40,7 @@
 			<p:ajax event="rowSelect" update=":formP:pDetail"
 				oncomplete="PF('pDialog').show()" />
 
-			<p:column headerText="Id Produit" filterBy="#{p.idProduit}"
+			<p:column rendered="false" headerText="Id Produit" filterBy="#{p.idProduit}"
 				sortBy="#{p.idProduit}" filterMatchMode="contains">
 				<h:outputText value="#{p.idProduit}" />
 			</p:column>
@@ -89,6 +89,20 @@
 				<h:outputText value="#{p.categorie.nomCategorie}" />
 			</p:column>
 
+			<p:column headerText="Ajouter au panier">
+
+				<h:outputText value="Quantité voulu" style="color:blue" />
+				<p:spinner id="quantite" value="#{lcMB.ligneCommande.quantite}"
+					size="5" min="1">
+				</p:spinner>
+
+				<p:commandLink value="Ajouter un produit au panier"
+					action="#{lcMB.ajouterLigneCommandeMB}">
+					<f:setPropertyActionListener value="#{pMB.produit.idProduit}"
+						target="#{lcMB.produit.idProduit}" />
+
+				</p:commandLink>
+			</p:column>
 
 
 		</p:dataTable>
@@ -103,8 +117,8 @@
 							style="max-height:500px" />
 					</f:facet>
 
-					<h:outputLabel value="Id" style="color:blue" />
-					<h:outputText value="#{pMB.produit.idProduit}" />
+					<h:outputLabel value="Id" style="color:blue" rendered="false"/>
+					<h:outputText value="#{pMB.produit.idProduit}" rendered="false"/>
 
 					<h:outputLabel value="Nom" style="color:blue" />
 					<h:outputText value="#{pMB.produit.designation}" />
@@ -122,18 +136,8 @@
 					<h:outputLabel value="Description" style="color:blue" />
 					<h:outputText value="#{pMB.produit.description}" />
 					
-					
-					<h:outputText value="Quantité voulu" style="color:blue" />
-					<p:spinner id="quantite" value="#{lcMB.ligneCommande.quantite}" size="5" min="1">
-					</p:spinner>
 
 				</p:panelGrid>
-						<p:commandLink value="Ajouter un produit au panier"
-							action="#{lcMB.ajouterLigneCommandeMB}">
-							<f:setPropertyActionListener value="#{pMB.produit.idProduit}"
-								target="#{lcMB.produit.idProduit}" />
-
-						</p:commandLink>
 			</p:outputPanel>
 		</p:dialog>
 

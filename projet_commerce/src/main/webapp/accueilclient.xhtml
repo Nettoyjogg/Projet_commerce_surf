@@ -123,7 +123,7 @@
 			<p:ajax event="rowSelect" update=":formCa:caDetail"
 				oncomplete="PF('caDialog').show()" />
 
-			<p:column headerText="Id" filterBy="#{ca.idCategorie}"
+			<p:column rendered="false" headerText="Id" filterBy="#{ca.idCategorie}"
 				sortBy="#{ca.idCategorie}" filterMatchMode="contains">
 				<h:outputText value="#{ca.idCategorie}" />
 			</p:column>
@@ -165,8 +165,8 @@
 							style="max-height:500px" />
 					</f:facet>
 
-					<h:outputLabel value="Id" style="color:blue" />
-					<h:outputText value="#{caMB.categorie.idCategorie}" />
+					<h:outputLabel value="Id" style="color:blue" rendered="false"/>
+					<h:outputText value="#{caMB.categorie.idCategorie}" rendered="false" />
 
 					<h:outputLabel value="Nom" style="color:blue" />
 					<h:outputText value="#{caMB.categorie.nomCategorie}" />
