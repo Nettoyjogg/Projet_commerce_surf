@@ -16,13 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 @Entity
-@Table(name="produits")
-public class Produit implements Serializable{
+@Table(name = "produits")
+public class Produit implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	//déclaration des attributs
+	// déclaration des attributs
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_p")
@@ -42,19 +41,19 @@ public class Produit implements Serializable{
 	private byte[] photo;
 	@Transient
 	private String img;
-	
-	//transformation de l'association UML en JAVA
+
+	// transformation de l'association UML en JAVA
 	@ManyToOne
-	@JoinColumn(name="categorie_p",referencedColumnName="id_ca")
+	@JoinColumn(name = "categorie_p", referencedColumnName = "id_ca")
 	private Categorie categorie;
-	@OneToMany(mappedBy="produit")
+	@OneToMany(mappedBy = "produit")
 	private List<LigneCommande> listeLigneCommande;
 
-
-	//déclaration des 3 constructeurs
+	// déclaration des 3 constructeurs
 	public Produit() {
 		super();
 	}
+
 	public Produit(String designation, String description, double prix, int quantite, boolean selectionne,
 			byte[] photo) {
 		super();
@@ -65,6 +64,7 @@ public class Produit implements Serializable{
 		this.selectionne = selectionne;
 		this.photo = photo;
 	}
+
 	public Produit(int idProduit, String designation, String description, double prix, int quantite,
 			boolean selectionne, byte[] photo) {
 		super();
@@ -76,35 +76,45 @@ public class Produit implements Serializable{
 		this.selectionne = selectionne;
 		this.photo = photo;
 	}
-	
-	//déclaration des getters et setters
+
+	// déclaration des getters et setters
+
 	public int getIdProduit() {
 		return idProduit;
 	}
+
 	public void setIdProduit(int idProduit) {
 		this.idProduit = idProduit;
 	}
+
 	public String getDesignation() {
 		return designation;
 	}
+
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public double getPrix() {
 		return prix;
 	}
+
 	public void setPrix(double prix) {
 		this.prix = prix;
 	}
+
 	public int getQuantite() {
 		return quantite;
 	}
+
 	public void setQuantite(int quantite) {
 		this.quantite = quantite;
 	}
@@ -112,47 +122,48 @@ public class Produit implements Serializable{
 	public boolean isSelectionne() {
 		return selectionne;
 	}
+
 	public void setSelectionne(boolean selectionne) {
 		this.selectionne = selectionne;
 	}
+
 	public byte[] getPhoto() {
 		return photo;
 	}
+
 	public void setPhoto(byte[] photo) {
 		this.photo = photo;
 	}
-	
 
-	
 	public Categorie getCategorie() {
 		return categorie;
 	}
+
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
 
-	
 	public List<LigneCommande> getListeLigneCommande() {
 		return listeLigneCommande;
 	}
+
 	public void setListeLigneCommande(List<LigneCommande> listeLigneCommande) {
 		this.listeLigneCommande = listeLigneCommande;
 	}
-	
 
 	public String getImg() {
 		return img;
 	}
+
 	public void setImg(String img) {
 		this.img = img;
 	}
+
 	@Override
 	public String toString() {
 		return "Produit [idProduit=" + idProduit + ", designation=" + designation + ", description=" + description
 				+ ", prix=" + prix + ", quantite=" + quantite + ", selectionne=" + selectionne + ", photo="
 				+ Arrays.toString(photo) + "]";
 	}
-	
-	
-	
+
 }
