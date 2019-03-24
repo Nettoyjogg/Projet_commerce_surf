@@ -98,16 +98,16 @@
        <h:outputText value="#{p.description}" />
         </p:column>
 
-<!--        <p:column headerText="Nom Categorie" filterBy="#{p.categorie.nomCategorie}" sortBy="#{p.categorie.nomCategorie}" filterMatchMode="exact"> -->
-<!--             <f:facet name="filter"> -->
-<!--                 <p:selectOneMenu onchange="PF('produitsTable').filter()" style="width:100%; box-sizing: border-box;" > -->
-<!--                      <f:selectItems itemLabel="#{p.categorie.nomCategorie}" itemValue="#{p.categorie.idCategorie}" value="#{pMB.listeCategorie}" var="p"></f:selectItems> -->
-<!--                      				<p:ajax event="valueChange" listener="#{pMB.rechercherProduitCategorieMB}" -->
-<!-- 						update="formP" /> -->
-<!--                 </p:selectOneMenu> -->
-<!--             </f:facet> -->
-<!--             <h:outputText value="#{p.categorie.nomCategorie}" /> -->
-<!--         </p:column> -->
+       <p:column headerText="Nom Categorie" filterBy="#{p.categorie.nomCategorie}" sortBy="#{p.categorie.nomCategorie}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('produitsTable').filter()" style="width:100%; box-sizing: border-box;" >
+                     <f:selectItems itemLabel="#{p.categorie.nomCategorie}" itemValue="#{p.categorie.idCategorie}" value="#{pMB.listeProduit}" var="p"></f:selectItems>
+                     				<p:ajax event="valueChange" listener="#{pMB.rechercherProduitCategorieMB}"
+						update="formP" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{p.categorie.nomCategorie}" />
+        </p:column>
 
 
 
@@ -121,15 +121,23 @@
                 </f:facet>
  
                 <h:outputLabel value="Id" style="color:blue"/>
-                <h:outputText value="#{pMB.produit.idCategorie}" />
+                <h:outputText value="#{pMB.produit.idProduit}" />
  
                 <h:outputLabel value="Nom" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.nomCategorie}" />
+                <h:outputText value="#{pMB.produit.designation}" />
  
+                 <h:outputLabel value="Prix" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.prix} €" />
+                
+                 <h:outputLabel value="Quantitedispo" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.quantite}" />
+                
+                 <h:outputLabel value="Categorie" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.categorie.nomCategorie}" />
                 
  
                 <h:outputLabel value="Description" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.description}" />
+                <h:outputText value="#{pMB.produit.description}" />
             </p:panelGrid>
         </p:outputPanel>
     </p:dialog>
