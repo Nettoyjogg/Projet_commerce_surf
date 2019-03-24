@@ -85,6 +85,29 @@
 				<h:outputText value="#{p.categorie.nomCategorie}" />
 			</p:column>
 
+			<p:column headerText="Opération">
+			
+			
+			<p:commandButton value="Supprimer"
+			action="#{pMB.supprimerProduitMB}" update="formP">
+			<f:setPropertyActionListener value="#{p.idProduit}"
+			target="#{pMB.produit.idProduit}" />
+
+			</p:commandButton>
+			
+						<p:commandButton value="Modifier"
+			action="modifierproduit">
+			<f:setPropertyActionListener value="#{p}"
+			target="#{pMB.produit}" />
+
+			</p:commandButton>
+			
+			
+			 <p:commandButton update=":formP:pDetail" oncomplete="PF('pDialog').show()" value="plus d'info">
+                    <f:setPropertyActionListener value="#{p}" target="#{pMB.produit}" />
+                </p:commandButton>
+			
+			</p:column>
 
 
 		</p:dataTable>

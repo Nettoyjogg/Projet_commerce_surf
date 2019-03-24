@@ -37,8 +37,9 @@
 				</p:outputPanel>
 			</f:facet>
 
-			<p:ajax event="rowSelect" update=":formCa:caDetail"
-				oncomplete="PF('caDialog').show()" />
+<!-- Tout voir au clic -->
+<!-- 			<p:ajax event="rowSelect" update=":formCa:caDetail" -->
+<!-- 				oncomplete="PF('caDialog').show()" /> -->
 
 			<p:column headerText="Id" filterBy="#{ca.idCategorie}"
 				sortBy="#{ca.idCategorie}" filterMatchMode="contains">
@@ -68,12 +69,27 @@
 			</p:column>
 
 			<p:column headerText="Opération">
+			
+			
 			<p:commandButton value="Supprimer"
 			action="#{caMB.supprimerCategorieMB}" update="formCa">
 			<f:setPropertyActionListener value="#{ca.idCategorie}"
 			target="#{caMB.categorie.idCategorie}" />
 
 			</p:commandButton>
+			
+						<p:commandButton value="Modifier"
+			action="modifiercategorie">
+			<f:setPropertyActionListener value="#{ca}"
+			target="#{caMB.categorie}" />
+
+			</p:commandButton>
+			
+			
+			 <p:commandButton update=":formCa:caDetail" oncomplete="PF('caDialog').show()" value="plus d'info">
+                    <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
+                </p:commandButton>
+			
 			</p:column>
 
 

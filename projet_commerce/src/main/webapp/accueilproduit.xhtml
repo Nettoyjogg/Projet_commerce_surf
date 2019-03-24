@@ -37,8 +37,8 @@
 				</p:outputPanel>
 			</f:facet>
 
-			<p:ajax event="rowSelect" update=":formP:pDetail"
-				oncomplete="PF('pDialog').show()" />
+<!-- 			<p:ajax event="rowSelect" update=":formP:pDetail" -->
+<!-- 				oncomplete="PF('pDialog').show()" /> -->
 
 			<p:column rendered="false" headerText="Id Produit" filterBy="#{p.idProduit}"
 				sortBy="#{p.idProduit}" filterMatchMode="contains">
@@ -102,6 +102,10 @@
 						target="#{lcMB.produit.idProduit}" />
 
 				</p:commandButton>
+				
+				<p:commandButton update=":formP:pDetail" oncomplete="PF('pDialog').show()" value="plus d'info">
+                    <f:setPropertyActionListener value="#{p}" target="#{pMB.produit}" />
+                </p:commandButton>
 			
 			</p:column>
 
@@ -136,6 +140,8 @@
 
 					<h:outputLabel value="Description" style="color:blue" />
 					<h:outputText value="#{pMB.produit.description}" />
+					
+
 					
 
 				</p:panelGrid>
