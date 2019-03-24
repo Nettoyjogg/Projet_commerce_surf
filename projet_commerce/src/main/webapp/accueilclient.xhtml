@@ -42,9 +42,16 @@
 	
 	<!-- Test Jogg -->
 	
-<h:form id="form" rendered="false">
-
-    <p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories" var="ca" itemStyle="text-align:center" responsive="true" >
+<h:form id="form1" rendered="false">
+				<p:selectOneMenu id="categorie" value="#{caMB.categorie.idCategorie}"
+					style="width:125px">
+					<f:selectItem itemLabel="Selectionner une catégorie" itemValue="" />
+					<f:selectItems value="#{caMB.listeCa}" var="ca" itemValue="#{ca.idCategorie}"
+						itemLabel="#{ca.nomCategorie}" />
+					<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}"
+						update="form1" />
+				</p:selectOneMenu>
+    <p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories" var="ca" itemStyle="text-align:center" responsive="true" reflow="true">
         <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"  layout="grid" styleClass="ui-panelgrid-blank"  >
             <f:facet name="header">
                 <h:graphicImage value="#{ca.img}" style="max-height:350px"/> 
@@ -57,7 +64,7 @@
             <h:outputLabel value="Description" style="color:black"/>
             <h:outputText value="#{ca.description}" />
                     <f:facet name="footer">
-                 <p:commandButton update=":form:caDetail" oncomplete="PF('caDialog').show()">
+                 <p:commandButton update=":form1:caDetail" oncomplete="PF('caDialog').show()">
                     <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
                 </p:commandButton>
         </f:facet>
@@ -102,7 +109,7 @@
  
  
  
-<h:form id="formCa">
+<h:form id="formCa" rendered="true">
      
     <p:dataTable id="tableCategorie" var="ca" value="#{caMB.listeCa}" widgetVar="categoriesTable" 
                  rows="10" paginator="true"
