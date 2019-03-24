@@ -57,6 +57,94 @@
 	
 	<!--  TEST JOGG 2 -->
 
+<h:form id="formP" rendered="true">
+     
+    <p:dataTable id="tableProduit" var="p" value="#{pMB.listeProduit}" widgetVar="produitsTable" 
+                 rows="10" paginator="true"
+                 paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 rowsPerPageTemplate="2,4,10"
+                 selectionMode="single" selection="#{pMB.produit}" rowKey="#{p.idProduit}"
+                 emptyMessage="CESTDELAMERDECEPUTAINDEPROJET" filteredValue="#{pMB.listeProduit}">
+ 
+        <f:facet name="header">
+            <p:outputPanel>
+                <h:outputText value="Search all fields:" />
+                <p:inputText id="globalFilter"  onkeyup="PF('produitsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+            </p:outputPanel>
+        </f:facet>
+         
+        <p:ajax event="rowSelect" update=":formP:pDetail" oncomplete="PF('pDialog').show()" />
+ 
+        <p:column headerText="Id Produit" filterBy="#{p.idProduit}" sortBy="#{p.idProduit}" filterMatchMode="contains">
+            <h:outputText value="#{p.idProduit}" />
+        </p:column>
+ 
+        <p:column headerText="Nom Produit" filterBy="#{p.designation}" sortBy="#{p.designation}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('produitsTable').filter()" style="width:100%; box-sizing: border-box;" >
+                     <f:selectItems itemLabel="#{p.designation}" itemValue="#{p.idProduit}" value="#{pMB.listeProduit}" var="p"></f:selectItems>
+                     				<p:ajax event="valueChange" listener="#{pMB.rechercherProduitClientParIdMB}"
+						update="formP" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{p.designation}" />
+        </p:column>
+ 
+        <p:column headerText="Image produit" >
+    <h:graphicImage value="#{p.img}" style="max-height:500px"/> 
+        </p:column>
+        
+        <p:column headerText="Description" >
+       <h:outputText value="#{p.description}" />
+        </p:column>
+
+       <p:column headerText="Nom Categorie" filterBy="#{p.categorie.nomCategorie}" sortBy="#{p.categorie.nomCategorie}" filterMatchMode="exact">
+            <f:facet name="filter">
+                <p:selectOneMenu onchange="PF('produitsTable').filter()" style="width:100%; box-sizing: border-box;" >
+                     <f:selectItems itemLabel="#{p.categorie.nomCategorie}" itemValue="#{p.categorie.idCategorie}" value="#{pMB.listeProduit}" var="p"></f:selectItems>
+                     				<p:ajax event="valueChange" listener="#{pMB.rechercherProduitCategorieMB}"
+						update="formP" />
+                </p:selectOneMenu>
+            </f:facet>
+            <h:outputText value="#{p.categorie.nomCategorie}" />
+        </p:column>
+
+
+
+    </p:dataTable>
+     
+    <p:dialog header="Produits" widgetVar="pDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="pDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty pMB.produit}" columnClasses="label,value">
+                <f:facet name="header">
+                    <h:graphicImage value="#{pMB.produit.img}" style="max-height:500px"/> 
+                </f:facet>
+ 
+                <h:outputLabel value="Id" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.idProduit}" />
+ 
+                <h:outputLabel value="Nom" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.designation}" />
+ 
+                 <h:outputLabel value="Prix" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.prix} €" />
+                
+                 <h:outputLabel value="Quantitedispo" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.quantite}" />
+                
+                 <h:outputLabel value="Categorie" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.categorie.nomCategorie}" />
+                
+ 
+                <h:outputLabel value="Description" style="color:blue"/>
+                <h:outputText value="#{pMB.produit.description}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+     
+ 
+     
+</h:form>
 
 
 
