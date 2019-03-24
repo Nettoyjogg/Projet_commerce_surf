@@ -74,4 +74,18 @@ public class CategorieDaoImpl implements ICategorieDao {
 		return (Categorie) s.get(Categorie.class, ca.getIdCategorie());
 	}
 
+	@Override
+	public List<String> consulterCategorieNomCategorieParIDDao() {
+		
+		Session s = sf.getCurrentSession();
+		// Requete
+		Query req = s.createQuery("SELECT ca.nomCategorie FROM Categorie as ca");
+
+		// Répérer un objet query
+
+		List<String> ListeCategorie = req.list();
+	
+		return ListeCategorie;
+	}
+
 }

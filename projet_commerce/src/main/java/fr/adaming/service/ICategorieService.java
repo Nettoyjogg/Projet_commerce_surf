@@ -21,4 +21,6 @@ public interface ICategorieService {
 
 	// Redéfinition for Client
 	public Categorie consulterCategorieParIDService(Categorie ca);
+	
+	public List<String> getNomCategorie();
 }

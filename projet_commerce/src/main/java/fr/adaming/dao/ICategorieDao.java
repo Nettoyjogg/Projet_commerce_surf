@@ -15,6 +15,8 @@ public interface ICategorieDao {
 	public int supprimerCategorieDao(Categorie ca);
 
 	public Categorie consulterCategorieParIDDao(Categorie ca);
+	
+	public List<String> consulterCategorieNomCategorieParIDDao();
 
 }
 

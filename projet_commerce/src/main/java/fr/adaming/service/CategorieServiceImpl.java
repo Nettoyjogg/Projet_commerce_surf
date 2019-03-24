@@ -1,5 +1,6 @@
 package fr.adaming.service;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import fr.adaming.model.Categorie;
 @Service("caService")
 @Transactional
 public class CategorieServiceImpl implements ICategorieService {
-
+	
 	// Transfo UML Java
 	@Autowired
 	ICategorieDao caDao;
@@ -74,5 +75,9 @@ public class CategorieServiceImpl implements ICategorieService {
 	public Categorie consulterCategorieParIDService(Categorie ca) {
 		return caDao.consulterCategorieParIDDao(ca);
 	}
+	
+	public List<String> getNomCategorie() {
+        return caDao.consulterCategorieNomCategorieParIDDao();
+    }
 
 }

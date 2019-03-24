@@ -11,10 +11,10 @@
 </h:head>
 
 <h:body>
-	<h:outputStylesheet library="css" name="monStyle.css"  />
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
-	
+
 	</h:form>
 
 	<h:form rendered="false">
@@ -37,148 +37,172 @@
 
 		</p:dataTable>
 	</h:form>
-	<h1 style="color: blue;text-align: center;"> <h:messages/></h1>
-	
-	
+	<h1 style="color: blue; text-align: center;">
+		<h:messages />
+	</h1>
+
+
 	<!-- Test Jogg -->
-	
-<h:form id="form1" rendered="false">
-				<p:selectOneMenu id="categorie" value="#{caMB.categorie.idCategorie}"
-					style="width:125px">
-					<f:selectItem itemLabel="Selectionner une catégorie" itemValue="" />
-					<f:selectItems value="#{caMB.listeCa}" var="ca" itemValue="#{ca.idCategorie}"
-						itemLabel="#{ca.nomCategorie}" />
-					<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}"
-						update="form1" />
-				</p:selectOneMenu>
-    <p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories" var="ca" itemStyle="text-align:center" responsive="true" reflow="true">
-        <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value"  layout="grid" styleClass="ui-panelgrid-blank"  >
-            <f:facet name="header">
-                <h:graphicImage value="#{ca.img}" style="max-height:350px"/> 
-            </f:facet>
- 
-            <h:outputLabel value="Nom" style="color:black"/>
-            <h:outputText value="#{ca.nomCategorie}" />
- 
- 
-            <h:outputLabel value="Description" style="color:black"/>
-            <h:outputText value="#{ca.description}" />
-                    <f:facet name="footer">
-                 <p:commandButton update=":form1:caDetail" oncomplete="PF('caDialog').show()">
-                    <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
-                </p:commandButton>
-        </f:facet>
-        </p:panelGrid>
- 
-        </p:carousel>
-       
-    
-        
-        
-        <!-- Correspon dau bonton pour chaque image -->
-	<p:dialog header="Categories" widgetVar="caDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="caDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty caMB.categorie}" columnClasses="label,value">
-                <f:facet name="header">
-                    <h:graphicImage value="#{caMB.categorie.img}" style="max-height:500px"/> 
-                </f:facet>
- 
-                <h:outputLabel value="Id" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.idCategorie}" />
- 
-                <h:outputLabel value="Nom" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.nomCategorie}" />
- 
-                
- 
-                <h:outputLabel value="Description" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.description}" />
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-	
-	
-	
+
+	<h:form id="form1" rendered="false">
+		<p:selectOneMenu id="categorie" value="#{caMB.categorie.idCategorie}"
+			style="width:125px">
+			<f:selectItem itemLabel="Selectionner une catégorie" itemValue="" />
+			<f:selectItems value="#{caMB.listeCa}" var="ca"
+				itemValue="#{ca.idCategorie}" itemLabel="#{ca.nomCategorie}" />
+			<p:ajax event="valueChange"
+				listener="#{caMB.rechercherCategorieClientParIdMB}" update="form1" />
+		</p:selectOneMenu>
+		<p:carousel value="#{caMB.listeCa}" headerText="Liste Catégories"
+			var="ca" itemStyle="text-align:center" responsive="true"
+			reflow="true">
+			<p:panelGrid columns="2" style="width:100%;margin:10px 0px"
+				columnClasses="label,value" layout="grid"
+				styleClass="ui-panelgrid-blank">
+				<f:facet name="header">
+					<h:graphicImage value="#{ca.img}" style="max-height:350px" />
+				</f:facet>
+
+				<h:outputLabel value="Nom" style="color:black" />
+				<h:outputText value="#{ca.nomCategorie}" />
+
+
+				<h:outputLabel value="Description" style="color:black" />
+				<h:outputText value="#{ca.description}" />
+				<f:facet name="footer">
+					<p:commandButton update=":form1:caDetail"
+						oncomplete="PF('caDialog').show()">
+						<f:setPropertyActionListener value="#{ca}"
+							target="#{caMB.categorie}" />
+					</p:commandButton>
+				</f:facet>
+			</p:panelGrid>
+
+		</p:carousel>
+
+
+
+
+		<!-- Correspon dau bonton pour chaque image -->
+		<p:dialog header="Categories" widgetVar="caDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="caDetail" style="text-align:center;">
+				<p:panelGrid columns="2" rendered="#{not empty caMB.categorie}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<h:graphicImage value="#{caMB.categorie.img}"
+							style="max-height:500px" />
+					</f:facet>
+
+					<h:outputLabel value="Id" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.idCategorie}" />
+
+					<h:outputLabel value="Nom" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.nomCategorie}" />
+
+
+
+					<h:outputLabel value="Description" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.description}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+
+
 	</h:form>
-	
-	
-	
+
+
+
 	<!-- Deuxième test Jogg -->
 
- 
- 
- 
- 
-<h:form id="formCa" rendered="true">
-     
-    <p:dataTable id="tableCategorie" var="ca" value="#{caMB.listeCa}" widgetVar="categoriesTable" 
-                 rows="10" paginator="true"
-                 paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 rowsPerPageTemplate="2,4,10"
-                 selectionMode="single" selection="#{caMB.categorie}" rowKey="#{ca.idCategorie}"
-                 emptyMessage="CESTDELAMERDECEPUTAINDEPROJET" filteredValue="#{caMB.listeCa}">
- 
-        <f:facet name="header">
-            <p:outputPanel>
-                <h:outputText value="Search all fields:" />
-                <p:inputText id="globalFilter"  onkeyup="PF('categoriesTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-            </p:outputPanel>
-        </f:facet>
-         
-        <p:ajax event="rowSelect" update=":formCa:caDetail" oncomplete="PF('caDialog').show()" />
- 
-        <p:column headerText="Id" filterBy="#{ca.idCategorie}" sortBy="#{ca.idCategorie}" filterMatchMode="contains">
-            <h:outputText value="#{ca.idCategorie}" />
-        </p:column>
- 
-        <p:column headerText="Nom" filterBy="#{ca.nomCategorie}" sortBy="#{ca.nomCategorie}" filterMatchMode="exact">
-            <f:facet name="filter">
-                <p:selectOneMenu onchange="PF('categoriesTable').filter()" style="width:100%; box-sizing: border-box;" >
-                     <f:selectItems itemLabel="#{ca.nomCategorie}" itemValue="#{ca.idCategorie}" value="#{caMB.listeCa}" var="ca"></f:selectItems>
-                     				<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}"
-						update="formCa" />
-                </p:selectOneMenu>
-            </f:facet>
-            <h:outputText value="#{ca.nomCategorie}" />
-        </p:column>
- 
-        <p:column headerText="Image catégorie" >
-    <h:graphicImage value="#{ca.img}" style="max-height:500px"/> 
-        </p:column>
-        
-        <p:column headerText="Description" >
-       <h:outputText value="#{ca.description}" />
-        </p:column>
 
 
 
 
-    </p:dataTable>
-     
-    <p:dialog header="Categories" widgetVar="caDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="caDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty caMB.categorie}" columnClasses="label,value">
-                <f:facet name="header">
-                    <h:graphicImage value="#{caMB.categorie.img}" style="max-height:500px"/> 
-                </f:facet>
- 
-                <h:outputLabel value="Id" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.idCategorie}" />
- 
-                <h:outputLabel value="Nom" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.nomCategorie}" />
- 
-                
- 
-                <h:outputLabel value="Description" style="color:blue"/>
-                <h:outputText value="#{caMB.categorie.description}" />
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-     
- 
-     
-</h:form>
-	
+	<h:form id="formCa" rendered="true">
+
+		<p:dataTable id="tableCategorie" var="ca" value="#{caMB.listeCa}"
+			widgetVar="categoriesTable" multiViewState="true" rows="10"
+			paginator="true"
+			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="2,4,10" selectionMode="single"
+			selection="#{caMB.categorie}" rowKey="#{ca.idCategorie}"
+			emptyMessage="Non, tkt" filteredValue="#{caMB.filteredListeCa}">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="PF('categoriesTable').filter()" style="width:150px"
+						placeholder="Enter keyword" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:ajax event="rowSelect" update=":formCa:caDetail"
+				oncomplete="PF('caDialog').show()" />
+
+			<p:column headerText="Id" filterBy="#{ca.idCategorie}"
+				sortBy="#{ca.idCategorie}" filterMatchMode="contains">
+				<h:outputText value="#{ca.idCategorie}" />
+			</p:column>
+
+			<p:column headerText="Nom" filterBy="#{ca.nomCategorie}"
+				sortBy="#{ca.nomCategorie}" filterMatchMode="exact">
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('categoriesTable').filter()"
+						style="width:100%; box-sizing: border-box;">
+						<f:selectItem itemLabel="Select One" itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{caMB.nomCategorie}" />
+						<!--                      <f:selectItems itemLabel="#{ca.nomCategorie}" itemValue="#{ca.idCategorie}" value="#{caMB.listeCa}" var="ca"></f:selectItems> -->
+						<!--                      				<p:ajax event="valueChange" listener="#{caMB.rechercherCategorieClientParIdMB}" -->
+						<!-- 						update="formCa" /> -->
+					</p:selectOneMenu>
+				</f:facet>
+				<h:outputText value="#{ca.nomCategorie}" />
+			</p:column>
+
+			<p:column headerText="Image catégorie">
+				<h:graphicImage value="#{ca.img}" style="max-height:500px" />
+			</p:column>
+
+			<p:column headerText="Description">
+				<h:outputText value="#{ca.description}" />
+			</p:column>
+
+
+
+
+		</p:dataTable>
+
+		<p:dialog header="Categories" widgetVar="caDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="caDetail" style="text-align:center;">
+				<p:panelGrid columns="2" rendered="#{not empty caMB.categorie}"
+					columnClasses="label,value">
+					<f:facet name="header">
+						<h:graphicImage value="#{caMB.categorie.img}"
+							style="max-height:500px" />
+					</f:facet>
+
+					<h:outputLabel value="Id" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.idCategorie}" />
+
+					<h:outputLabel value="Nom" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.nomCategorie}" />
+
+
+
+					<h:outputLabel value="Description" style="color:blue" />
+					<h:outputText value="#{caMB.categorie.description}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+
+
+	</h:form>
+
 </h:body>
 </html>

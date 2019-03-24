@@ -31,7 +31,7 @@ public class CategorieManagedBean implements Serializable {
 	private boolean indice;
 	private UploadedFile image;
 	private List<Categorie> listeCa;
-
+	private List<Categorie> filteredListeCa;
 
 	// Constructeur vide
 	public CategorieManagedBean() {
@@ -49,6 +49,18 @@ public class CategorieManagedBean implements Serializable {
 	}
 
 	// Getters and Setters
+
+	public List<String> getnomCategorie() {
+		return categorieService.getNomCategorie();
+	}
+
+	public List<Categorie> getFilteredListeCa() {
+		return filteredListeCa;
+	}
+
+	public void setFilteredListeCa(List<Categorie> filteredListeCa) {
+		this.filteredListeCa = filteredListeCa;
+	}
 
 	public Categorie getCategorie() {
 		return categorie;
