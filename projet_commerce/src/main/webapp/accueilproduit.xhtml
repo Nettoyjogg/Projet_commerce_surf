@@ -68,7 +68,7 @@
 			</p:column>
 
 			<p:column headerText="Prix" sortBy="#{p.prix}">
-				<h:outputText value="#{p.prix}" />
+				<h:outputText value="#{p.prix} €" />
 			</p:column>
 
 			<p:column headerText="Quantité" sortBy="#{p.quantite}">
@@ -121,7 +121,19 @@
 
 					<h:outputLabel value="Description" style="color:blue" />
 					<h:outputText value="#{pMB.produit.description}" />
+					
+					
+					<h:outputText value="Quantité voulu" style="color:blue" />
+					<p:spinner id="quantite" value="#{lcMB.ligneCommande.quantite}" size="5" min="1">
+					</p:spinner>
+
 				</p:panelGrid>
+						<p:commandLink value="Ajouter un produit au panier"
+							action="#{lcMB.ajouterLigneCommandeMB}">
+							<f:setPropertyActionListener value="#{pMB.produit.idProduit}"
+								target="#{lcMB.produit.idProduit}" />
+
+						</p:commandLink>
 			</p:outputPanel>
 		</p:dialog>
 
