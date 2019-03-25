@@ -7,25 +7,28 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
-	<title>Facelet Supprimer</title>
+	<title>Supprimer Categorie</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: red; text-align: center">Formulaire de
-		suppression</h1>
-	<h:form>
+
+	<h1>Formulaire de suppression</h1>
+	<h:form class="form-group">
 		<h:panelGrid columns="2">
-		Id: <h:inputText value="#{caMB.categorie.idCategorie}" />
+			<h:outputLabel class="labeltest">Id:</h:outputLabel>
+			<h:inputText value="#{caMB.categorie.idCategorie}" />
 			<h:commandButton value="supprimer"
 				action="#{caMB.supprimerCategorieMB}"></h:commandButton>
 		</h:panelGrid>
 	</h:form>
-	<h1 style="color: red; text-align: center">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

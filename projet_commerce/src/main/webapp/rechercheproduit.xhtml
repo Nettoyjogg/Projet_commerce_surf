@@ -9,13 +9,15 @@
 <h:head>
 	<title>Rechercher un produit</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
-	<h1 style="color: red; text-align: center">Rechercher un produit
+	<h1>Rechercher un produit
 		par son Id</h1>
 	<h:form>
 		<h:panelGrid columns="2">
@@ -65,7 +67,7 @@
 
 	</p:dataTable>
 
-	<h1 style="color: red; text-align: center">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

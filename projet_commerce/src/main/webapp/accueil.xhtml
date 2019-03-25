@@ -7,17 +7,24 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
-	<title>Ma premi�re Facelet</title>
+	<title>Accueil Admin</title>
 </h:head>
 
-<h:body>
+<h:body class="main">
 	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
-	<h1 style="color: blue; text-align: center;">Liste des catégories</h1>
-	
-<h:form id="formCa" rendered="true">
+	<br />
+	<br />
+
+
+	<h1>Liste des catégories</h1>
+	<h1>
+		<h:messages />
+	</h1>
+
+	<h:form id="formCa" rendered="true">
 
 		<p:dataTable id="tableCategorie" var="ca" value="#{caMB.listeCa}"
 			widgetVar="categoriesTable" multiViewState="true" rows="10"
@@ -37,9 +44,9 @@
 				</p:outputPanel>
 			</f:facet>
 
-<!-- Tout voir au clic -->
-<!-- 			<p:ajax event="rowSelect" update=":formCa:caDetail" -->
-<!-- 				oncomplete="PF('caDialog').show()" /> -->
+			<!-- Tout voir au clic -->
+			<p:ajax event="rowSelect" update=":formCa:caDetail"
+				oncomplete="PF('caDialog').show()" />
 
 			<p:column headerText="Id" filterBy="#{ca.idCategorie}"
 				sortBy="#{ca.idCategorie}" filterMatchMode="contains">
@@ -51,7 +58,7 @@
 				<f:facet name="filter">
 					<p:selectOneMenu onchange="PF('categoriesTable').filter()"
 						style="width:100%; box-sizing: border-box;">
-						<f:selectItem itemLabel="Select One" itemValue="#{null}"
+						<f:selectItem itemLabel="Tous" itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{caMB.nomCategorie}" />
 					</p:selectOneMenu>
@@ -60,7 +67,8 @@
 			</p:column>
 
 			<p:column headerText="Image catégorie">
-				<h:graphicImage value="#{ca.img}" style="max-height:350px;max-width:200px"  />
+				<h:graphicImage value="#{ca.img}"
+					style="max-height:350px;max-width:200px" />
 			</p:column>
 
 			<p:column headerText="Description" filterBy="#{ca.description}"
@@ -69,27 +77,21 @@
 			</p:column>
 
 			<p:column headerText="Opération">
-			
-			
-			<p:commandButton value="Supprimer"
-			action="#{caMB.supprimerCategorieMB}" update="formCa">
-			<f:setPropertyActionListener value="#{ca.idCategorie}"
-			target="#{caMB.categorie.idCategorie}" />
 
-			</p:commandButton>
-			
-						<p:commandButton value="Modifier"
-			action="modifiercategorie">
-			<f:setPropertyActionListener value="#{ca}"
-			target="#{caMB.categorie}" />
 
-			</p:commandButton>
-			
-			
-			 <p:commandButton update=":formCa:caDetail" oncomplete="PF('caDialog').show()" value="plus d'info">
-                    <f:setPropertyActionListener value="#{ca}" target="#{caMB.categorie}" />
-                </p:commandButton>
-			
+				<h:commandButton value="Supprimer"
+					action="#{caMB.supprimerCategorieMB}" update="formCa">
+					<f:setPropertyActionListener value="#{ca.idCategorie}"
+						target="#{caMB.categorie.idCategorie}" />
+
+				</h:commandButton>
+
+				<h:commandButton value="Modifier" action="modifiercategorie">
+					<f:setPropertyActionListener value="#{ca}"
+						target="#{caMB.categorie}" />
+
+				</h:commandButton>
+
 			</p:column>
 
 
@@ -103,7 +105,7 @@
 					columnClasses="label,value">
 					<f:facet name="header">
 						<h:graphicImage value="#{caMB.categorie.img}"
-							style="max-height:450px" />
+							style="max-height:350px" />
 					</f:facet>
 
 					<h:outputLabel value="Id" style="color:blue" />
@@ -124,6 +126,6 @@
 
 	</h:form>
 
-	<h1 style="color: blue;text-align: center;"> <h:messages/></h1>
+
 </h:body>
 </html>

@@ -6,34 +6,38 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 <h:head>
 
-	<title>Ajout Produit</title>
+	<title>Ajout d'un produit au panier</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: blue; text-align: center;">Formulaire d'ajout
-		des produits</h1>
+	<h1>Ajout d'un produit au panier</h1>
 
 	<!-- enctype pour ajouter une photo -->
-	<h:form enctype="multipart/form-data">
+	<h:form enctype="multipart/form-data" class="form-group">
 		<h:panelGrid columns="2">
 
-		IdProduit: <h:inputText value="#{lcMB.produit.idProduit}" />
-	
-		
-		Quantité Produit: <h:inputText value="#{lcMB.ligneCommande.quantite}" />
+			<h:outputLabel class="labeltest">IdProduit:</h:outputLabel>
+			<h:inputText value="#{lcMB.produit.idProduit}" />
+
+
+			<h:outputLabel class="labeltest">Quantité Produit:</h:outputLabel>
+			<h:inputText value="#{lcMB.ligneCommande.quantite}" />
 
 			<!-- Pour envoyer directement en Post -->
-			<h:commandButton value="Ajouter" action="#{lcMB.ajouterLigneCommandeMB}"></h:commandButton>
+			<h:commandButton value="Ajouter"
+				action="#{lcMB.ajouterLigneCommandeMB}"></h:commandButton>
 
 		</h:panelGrid>
 	</h:form>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

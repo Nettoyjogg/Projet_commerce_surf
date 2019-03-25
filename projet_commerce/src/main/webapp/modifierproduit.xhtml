@@ -9,47 +9,56 @@
 
 	<title>Modifier Produit</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
-	<h1 style="color: red; text-align: center">Formulaire de
-		modification</h1>
-	<h:form enctype="multipart/form-data">
+
+	<h1>Formulaire de modification</h1>
+	<h:form enctype="multipart/form-data" class="form-group">
 		<h:panelGrid columns="2">
-		Id Produit: <h:inputText value="#{pMB.produit.idProduit}">
+			<h:outputLabel class="labeltest">Id Produit:</h:outputLabel>
+			<h:inputText value="#{pMB.produit.idProduit}">
 				<p:ajax event="keyup" listener="#{pMB.modifierProduitAutoMB}"
 					update="designationproduit, descriptionproduit, prixproduit,quantiteproduit,categorieproduit,imageproduit " />
 
-			</h:inputText>				
+			</h:inputText>
 
-		Designation: <h:inputText id="designationproduit"
+			<h:outputLabel class="labeltest">Designation:</h:outputLabel>
+			<h:inputText id="designationproduit"
 				value="#{pMB.produit.designation}" />
 
-		Description : <h:inputText id="descriptionproduit"
+			<h:outputLabel class="labeltest">Description :</h:outputLabel>
+			<h:inputText id="descriptionproduit"
 				value="#{pMB.produit.description}" />
-		
-		Prix: <h:inputText id="prixproduit" value="#{pMB.produit.prix}" />
-		
-		Quantite: <h:inputText id="quantiteproduit"
-				value="#{pMB.produit.quantite}" />
-		
-		Selectionne: <h:inputText id="selectionneproduit"
+
+			<h:outputLabel class="labeltest">Prix:</h:outputLabel>
+			<h:inputText id="prixproduit" value="#{pMB.produit.prix}" />
+
+			<h:outputLabel class="labeltest">Quantite:</h:outputLabel>
+			<h:inputText id="quantiteproduit" value="#{pMB.produit.quantite}" />
+
+			<h:outputLabel class="labeltest">Selectionne:</h:outputLabel>
+			<h:inputText id="selectionneproduit"
 				value="#{pMB.produit.selectionne}" />
-		
-		Catégorie: <h:inputText id="categorieproduit" 
-				value="#{pMB.categorie.idCategorie}" />
 
-		Photo avant: <h:graphicImage id="imageproduit" value="#{pMB.produit.img}" />
-			Photo après <p:fileUpload value="#{pMB.image}" mode="simple"	skinSimple="true" />
+			<h:outputLabel class="labeltest">Catégorie:</h:outputLabel> <h:inputText
+					id="categorieproduit" value="#{pMB.categorie.idCategorie}" />
+
+				<h:outputLabel class="labeltest">Photo avant:</h:outputLabel>
+				<h:graphicImage id="imageproduit" value="#{pMB.produit.img}" />
+				<h:outputLabel class="labeltest">Photo après</h:outputLabel>
+				<p:fileUpload value="#{pMB.image}" mode="simple" skinSimple="true" />
 
 
-			<h:commandButton value="modifier" action="#{pMB.modifierProduitMB}"></h:commandButton>
+				<h:commandButton value="modifier" action="#{pMB.modifierProduitMB}"></h:commandButton>
 		</h:panelGrid>
 	</h:form>
-	<h1 style="color: red; text-align: center">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

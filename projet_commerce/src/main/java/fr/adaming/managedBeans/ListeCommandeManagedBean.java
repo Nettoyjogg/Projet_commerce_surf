@@ -58,6 +58,8 @@ public class ListeCommandeManagedBean implements Serializable {
 	private List<LigneCommande> filteredListeLigneCommande;
 	private final static int sort = 1;
 	private static int total;
+	private static int remise;
+	private static int totalar;
 
 	// Constructeur vide
 	public ListeCommandeManagedBean() {
@@ -71,12 +73,21 @@ public class ListeCommandeManagedBean implements Serializable {
 		this.client = new Client();
 		this.adresse = new Adresse();
 		this.panier = new Panier();
+
 	}
 
 	// Getters and Setters
 
 	public HttpSession getMaSession() {
 		return maSession;
+	}
+
+	public int getTotalar() {
+		return totalar;
+	}
+
+	public int getRemise() {
+		return remise;
 	}
 
 	public int getTotal() {
@@ -199,13 +210,14 @@ public class ListeCommandeManagedBean implements Serializable {
 	// exécutée après l'instanciation de l'objet.
 	public void init() {
 		maSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-
 	}
 
 	// Méthodes :
 
 	public String ajouterLigneCommandeMB() {
-		int total2=0;
+		int remise2 = 0;
+		int total2 = 0;
+		int total3 = 0;
 		int test = 0;
 		// Ici on check si on a déjà un panier dans la session
 		if (maSession.getAttribute("panierSession") != null) {
@@ -295,12 +307,24 @@ public class ListeCommandeManagedBean implements Serializable {
 				for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
 					total2 = total2 + (int) panier.getListeLigneCommande().get(i).getPrix();
 				}
+				if (total2 > 10000) {
+					remise2 = 1000;
+					panier.getListeLigneCommande().get(0)
+							.setPrix(panier.getListeLigneCommande().get(0).getPrix() - remise2);
+					total3 = total2;
+					total2 = total2 - remise2;
+				} else {
+					remise2 = 0;
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// Enfin on met le panier dans la session et on retourne à l'accueil
 			// panier
-			total=total2;
+			remise = remise2;
+			totalar = total3;
+			total = total2;
 			maSession.setAttribute("panierSession", panier);
 			return "panier";
 
@@ -607,6 +631,9 @@ public class ListeCommandeManagedBean implements Serializable {
 
 	// Supprimer une ligne de commande du panier
 	public String supprimerlignecommandepanierMB() {
+		int remise2 = 0;
+		int total2 = 0;
+		int total3 = 0;
 		// On vérifie si il y a bien un panier, si il n'y en as pas la méthode
 		// est inutile
 		if (maSession.getAttribute("panierSession") == null) {
@@ -627,6 +654,31 @@ public class ListeCommandeManagedBean implements Serializable {
 			if (produit.getDesignation().equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
 
 				this.panier.getListeLigneCommande().remove(i);
+
+				try {
+					for (int i2 = 0; i2 < panier.getListeLigneCommande().size(); i2++) {
+						total2 = total2 + (int) panier.getListeLigneCommande().get(i2).getPrix();
+					}
+					if (total2 > 10000) {
+						remise2 = 1000;
+						panier.getListeLigneCommande().get(0)
+								.setPrix(panier.getListeLigneCommande().get(0).getPrix() - remise2);
+						total3 = total2;
+						total2 = total2 - remise2;
+					} else {
+						remise2 = 0;
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// Enfin on met le panier dans la session et on retourne à
+				// l'accueil
+				// panier
+				remise = remise2;
+				totalar = total3;
+				total = total2;
+
 				return "panier";
 			}
 

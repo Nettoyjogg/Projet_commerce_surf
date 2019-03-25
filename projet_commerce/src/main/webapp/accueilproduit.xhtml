@@ -6,16 +6,23 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 <h:head>
 
-	<title>Insert title here</title>
+	<title>Accueil produit client</title>
 </h:head>
-<h:body>
+<h:body class="main">
 
 	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 	<!--  TEST JOGG 2 -->
+
+	<h1>Liste des produits</h1>
+	<h1>
+		<h:messages />
+	</h1>
 
 	<h:form id="formP" rendered="true">
 
@@ -25,7 +32,7 @@
 			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="2,4,10" selectionMode="single"
 			selection="#{pMB.produit}" rowKey="#{p.idProduit}"
-			emptyMessage="CESTDELAMERDECEPUTAINDEPROJET"
+			emptyMessage="Produits non trouvés"
 			filteredValue="#{pMB.filteredListeProduit}">
 
 			<f:facet name="header">
@@ -37,11 +44,12 @@
 				</p:outputPanel>
 			</f:facet>
 
-<!-- 			<p:ajax event="rowSelect" update=":formP:pDetail" -->
-<!-- 				oncomplete="PF('pDialog').show()" /> -->
+			<p:ajax event="rowSelect" update=":formP:pDetail"
+				oncomplete="PF('pDialog').show()" />
 
-			<p:column rendered="false" headerText="Id Produit" filterBy="#{p.idProduit}"
-				sortBy="#{p.idProduit}" filterMatchMode="contains">
+			<p:column rendered="false" headerText="Id Produit"
+				filterBy="#{p.idProduit}" sortBy="#{p.idProduit}"
+				filterMatchMode="contains">
 				<h:outputText value="#{p.idProduit}" />
 			</p:column>
 
@@ -59,7 +67,8 @@
 			</p:column>
 
 			<p:column headerText="Image produit">
-				<h:graphicImage value="#{p.img}" style="max-height:350px;max-width:150px" />
+				<h:graphicImage value="#{p.img}"
+					style="max-height:350px;max-width:150px" />
 			</p:column>
 
 			<p:column headerText="Description" filterBy="#{p.description}"
@@ -89,27 +98,6 @@
 				<h:outputText value="#{p.categorie.nomCategorie}" />
 			</p:column>
 
-			<p:column headerText="Ajouter au panier">
-
-				<h:outputText value="Quantité voulu" style="color:blue" />
-				<p:spinner id="quantite" value="#{lcMB.ligneCommande.quantite}"
-					size="5" min="1">
-				</p:spinner>
-				
-			<p:commandButton value="Ajouter un produit au panier"
-					action="#{lcMB.ajouterLigneCommandeMB}" update="formP">
-					<f:setPropertyActionListener value="#{pMB.produit.idProduit}"
-						target="#{lcMB.produit.idProduit}" />
-
-				</p:commandButton>
-				
-				<p:commandButton update=":formP:pDetail" oncomplete="PF('pDialog').show()" value="plus d'info">
-                    <f:setPropertyActionListener value="#{p}" target="#{pMB.produit}" />
-                </p:commandButton>
-			
-			</p:column>
-
-
 		</p:dataTable>
 
 		<p:dialog header="Produits" widgetVar="pDialog" modal="true"
@@ -119,11 +107,11 @@
 					columnClasses="label,value">
 					<f:facet name="header">
 						<h:graphicImage value="#{pMB.produit.img}"
-							style="max-height:450px" />
+							style="max-height:350px" />
 					</f:facet>
 
-					<h:outputLabel value="Id" style="color:blue" rendered="false"/>
-					<h:outputText value="#{pMB.produit.idProduit}" rendered="false"/>
+					<h:outputLabel value="Id" style="color:blue" rendered="false" />
+					<h:outputText value="#{pMB.produit.idProduit}" rendered="false" />
 
 					<h:outputLabel value="Nom" style="color:blue" />
 					<h:outputText value="#{pMB.produit.designation}" />
@@ -140,9 +128,18 @@
 
 					<h:outputLabel value="Description" style="color:blue" />
 					<h:outputText value="#{pMB.produit.description}" />
-					
 
-					
+					<h:outputText value="Quantité voulu" style="color:blue" />
+					<p:spinner id="quantite" value="#{lcMB.ligneCommande.quantite}"
+						size="5" min="1">
+					</p:spinner>
+
+					<h:commandButton value="Ajouter au panier"
+						action="#{lcMB.ajouterLigneCommandeMB}" update="formP">
+						<f:setPropertyActionListener value="#{pMB.produit}"
+							target="#{lcMB.produit}" />
+
+					</h:commandButton>
 
 				</p:panelGrid>
 			</p:outputPanel>
@@ -155,8 +152,6 @@
 
 
 
-	<h1 style="color: blue; text-align: center;">
-		<h:messages />
-	</h1>
+
 </h:body>
 </html>

@@ -7,18 +7,20 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 
 <h:head>
-	<title>Ma premi�re Facelet</title>
+	<title>Panier</title>
 </h:head>
 
-<h:body>
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
 	</h:form>
-	<h1 style="color: blue; text-align: center;">Panier</h1>
+	<br />
+	<br />
 
-	<h1 style="color: blue; text-align: center;">
-		<h:messages />
-	</h1>
+	<h1>Votre Panier</h1>
+
+
 
 	<h:form id="formLC" rendered="true">
 
@@ -85,14 +87,36 @@
 				</p:commandButton>
 			</p:column>
 			<p:summaryRow>
-				<p:column colspan="3" style="text-align:right">
-					<h:outputText value="Total:" />
+
+				<p:column style="text-align:right">
+					<h:outputText value="Total, Remise, Total après Remise:" />
+				</p:column>
+
+				<p:column>
+					<h:outputText value="#{lcMB.totalar}">
+						<f:convertNumber type="currency" currencySymbol="€" />
+					</h:outputText>
+				</p:column>
+
+				<p:column>
+					<h:outputText value="#{lcMB.remise}">
+						<f:convertNumber type="currency" currencySymbol="€" />
+					</h:outputText>
 				</p:column>
 				<p:column>
 					<h:outputText value="#{lcMB.total}">
 						<f:convertNumber type="currency" currencySymbol="€" />
 					</h:outputText>
 				</p:column>
+
+
+
+
+				<p:column>
+					<h:commandButton value="Commander"
+						action="#{lcMB.lierCommandeLigneCommandeMB}"></h:commandButton>
+				</p:column>
+
 			</p:summaryRow>
 
 		</p:dataTable>
@@ -100,6 +124,8 @@
 
 	</h:form>
 
-
+	<h1>
+		<h:messages />
+	</h1>
 </h:body>
 </html>

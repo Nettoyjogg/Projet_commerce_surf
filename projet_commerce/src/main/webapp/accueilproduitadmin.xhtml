@@ -6,18 +6,21 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 <h:head>
 
-	<title>Insert title here</title>
+	<title>Accueil Produit côté admin</title>
 </h:head>
-<h:body>
-<h:outputStylesheet library="css" name="monStyle.css" />
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: blue; text-align: center;">Liste des produits</h1>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>Liste des produits</h1>
+
+	<h1>
 		<h:messages />
 	</h1>
 
@@ -29,7 +32,7 @@
 			paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			rowsPerPageTemplate="2,4,10" selectionMode="single"
 			selection="#{pMB.produit}" rowKey="#{p.idProduit}"
-			emptyMessage="CESTDELAMERDECEPUTAINDEPROJET"
+			emptyMessage="Pas de produits trouvés"
 			filteredValue="#{pMB.filteredListeProduit}">
 
 			<f:facet name="header">
@@ -63,7 +66,8 @@
 			</p:column>
 
 			<p:column headerText="Image produit">
-				<h:graphicImage value="#{p.img}" style="max-height:350px;max-width:150px" />
+				<h:graphicImage value="#{p.img}"
+					style="max-height:350px;max-width:150px" />
 			</p:column>
 
 			<p:column headerText="Description" filterBy="#{p.description}"
@@ -86,27 +90,21 @@
 			</p:column>
 
 			<p:column headerText="Opération">
-			
-			
-			<p:commandButton value="Supprimer"
-			action="#{pMB.supprimerProduitMB}" update="formP">
-			<f:setPropertyActionListener value="#{p.idProduit}"
-			target="#{pMB.produit.idProduit}" />
 
-			</p:commandButton>
-			
-						<p:commandButton value="Modifier"
-			action="modifierproduit">
-			<f:setPropertyActionListener value="#{p}"
-			target="#{pMB.produit}" />
 
-			</p:commandButton>
-			
-			
-			 <p:commandButton update=":formP:pDetail" oncomplete="PF('pDialog').show()" value="plus d'info">
-                    <f:setPropertyActionListener value="#{p}" target="#{pMB.produit}" />
-                </p:commandButton>
-			
+				<h:commandButton value="Supprimer"
+					action="#{pMB.supprimerProduitMB}" update="formP">
+					<f:setPropertyActionListener value="#{p.idProduit}"
+						target="#{pMB.produit.idProduit}" />
+
+				</h:commandButton>
+
+				<h:commandButton value="Modifier" action="modifierproduit">
+					<f:setPropertyActionListener value="#{p}" target="#{pMB.produit}" />
+
+				</h:commandButton>
+
+
 			</p:column>
 
 
@@ -119,7 +117,7 @@
 					columnClasses="label,value">
 					<f:facet name="header">
 						<h:graphicImage value="#{pMB.produit.img}"
-							style="max-height:450px" />
+							style="max-height:350px" />
 					</f:facet>
 
 					<h:outputLabel value="Id" style="color:blue" />

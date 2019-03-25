@@ -8,34 +8,42 @@
 
 	<title>Ajout Produit</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: blue; text-align: center;">Formulaire d'ajout
-		des produits</h1>
+
+	<h1>Formulaire d'ajout des produits</h1>
 
 	<!-- enctype pour ajouter une photo -->
-	<h:form enctype="multipart/form-data">
+	<h:form enctype="multipart/form-data" class="form-group">
 		<h:panelGrid columns="2">
 
-		Designation: <h:inputText value="#{pMB.produit.designation}" />
+			<h:outputLabel class="labeltest">Designation:</h:outputLabel>
+			<h:inputText value="#{pMB.produit.designation}" />
 
-		Description : <h:inputText value="#{pMB.produit.description}" />
-		
-		Prix: <h:inputText value="#{pMB.produit.prix}" />
-		
-		Quantite: <h:inputText value="#{pMB.produit.quantite}" />
-		
-		Selectionne: <h:inputText value="#{pMB.produit.selectionne}" />
-		
-		Photo: <p:fileUpload value="#{pMB.image}" mode="simple"
-				skinSimple="true" /> 
-		
-		Categorie: <h:inputText value="#{pMB.categorie.idCategorie}" />
+			<h:outputLabel class="labeltest">Description :</h:outputLabel>
+			<h:inputText value="#{pMB.produit.description}" />
+
+			<h:outputLabel class="labeltest">Prix:</h:outputLabel>
+			<h:inputText value="#{pMB.produit.prix}" />
+
+			<h:outputLabel class="labeltest">Quantite:</h:outputLabel>
+			<h:inputText value="#{pMB.produit.quantite}" />
+
+			<h:outputLabel class="labeltest">Selectionne:</h:outputLabel>
+			<h:inputText value="#{pMB.produit.selectionne}" />
+
+			<h:outputLabel class="labeltest">Photo:</h:outputLabel>
+			<p:fileUpload value="#{pMB.image}" mode="simple" skinSimple="true" />
+
+			<h:outputLabel class="labeltest">Categorie:</h:outputLabel>
+			<h:inputText value="#{pMB.categorie.idCategorie}" />
 
 			<!-- Pour envoyer directement en Post -->
 			<h:commandButton value="Ajouter" action="#{pMB.ajouterProduitMB}"></h:commandButton>
@@ -43,7 +51,7 @@
 		</h:panelGrid>
 	</h:form>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

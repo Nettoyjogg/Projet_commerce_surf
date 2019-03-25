@@ -10,23 +10,28 @@
 	<title>Facelet ajout</title>
 </h:head>
 
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/header.xhtml" />
 	</h:form>
-	<h1 style="color: blue; text-align: center;">Formulaire d'ajout</h1>
+	<br />
+	<br />
 
-	<h:form enctype="multipart/form-data">
+	<h1>Formulaire d'ajout</h1>
+
+	<h:form enctype="multipart/form-data" class="form-group">
 		<h:panelGrid columns="2">
 
-		Nom: <h:inputText value="#{caMB.categorie.nomCategorie}" />
+			<h:outputLabel class="labeltest">Nom:</h:outputLabel>
+			<h:inputText value="#{caMB.categorie.nomCategorie}" />
 
 
-		Description : <h:inputText value="#{caMB.categorie.description}" />
-		
-		Photo: <p:fileUpload value="#{caMB.image}" mode="simple"
-				skinSimple="true" />
+			<h:outputLabel class="labeltest">Description :</h:outputLabel>
+			<h:inputText value="#{caMB.categorie.description}" />
+
+			<h:outputLabel class="labeltest">Photo:</h:outputLabel>
+			<p:fileUpload value="#{caMB.image}" mode="simple" skinSimple="true" />
 
 
 			<!-- Pour envoyer directement en Post -->
@@ -35,7 +40,7 @@
 		</h:panelGrid>
 	</h:form>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

@@ -25,7 +25,7 @@ background-size: 85%;
 	}
 
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
-	background: url(../resources/images/loupe.jpg) no-repeat center center!important;
+/* 	background: url(../resources/images/fondsable.jpg) no-repeat center center!important; */
 	
 }
 
@@ -44,4 +44,117 @@ element.style{
         display: none;
     }
      
+     /* ------------------------------------------------------------------------------------------------------- */
      
+     @media (min-width: 768px) {
+	
+
+		/*Allow main to be next to Nav*/
+		.main{
+			position: absolute;
+			width: 100%; /*keeps 100% minus nav size*/
+			/*margin-left: 40px;*/
+			float: right;
+		}
+
+		
+		.form-group .labeltest{
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 1.0px;
+		-webkit-text-stroke-color: black;
+		font-size: 12pt;
+		}
+		
+		.main h1{
+		text-align: center;
+		font-weight: bold;
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 1.5px;
+		-webkit-text-stroke-color: black;
+		font-size: 3vw;
+		}
+		
+	}
+
+	/* .....NavBar: Fully showing nav bar..... */
+
+	@media (min-width: 1330px) {
+
+		/*Allow main to be next to Nav*/
+		.main{
+			width: 100%; /*keeps 100% minus nav size*/
+			
+		}
+		.main{
+		padding: 20px 20px 20px 20px;
+	}
+
+		
+		.form-group .labeltest{
+		font-size: 14pt;
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 1.0px;
+		-webkit-text-stroke-color: black;
+		}
+		
+		.main h1 {
+		text-align: center;
+		font-weight: bold;
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 2.5px;
+		-webkit-text-stroke-color: black;
+		font-size: 3.5vw;
+		}
+		
+	}
+
+    	.row{
+		    margin-top:40px;
+		    padding: 0 10px;
+		}
+		.clickable{
+		    cursor: pointer;   
+		}
+
+		.panel-heading div {
+			margin-top: -18px;
+			font-size: 15px;
+		}
+		
+		.panel-heading h3 {
+			font-size: 20px;
+			text-align: center;
+		}
+		
+		.panel-heading div span{
+			margin-left:5px;
+		}
+		.panel-body{
+			display: none;
+		}
+		
+		@media (max-width: 768px) {
+		.main h1 {
+		text-align: center;
+		font-weight: bold;
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 1.5px;
+		-webkit-text-stroke-color: black;
+		font-size: 5vw;
+		}
+		
+		.form-group .labeltest{
+		font-size: 13pt;
+		color: orange;
+		-webkit-text-fill-color: orange;
+		-webkit-text-stroke-width: 1.0px;
+		-webkit-text-stroke-color: black;
+		}
+		
+		
+}

@@ -8,35 +8,48 @@
 
 	<title>Inscription d'un client</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: blue; text-align: center;">Inscription client</h1>
 
-	
-	<h:form>
+	<h1>Inscription client</h1>
+
+
+	<h:form class="form-group">
 		<h:panelGrid columns="2">
 
-Nom: <h:inputText value="#{cMB.client.nomClient}" />
-numero adresse: <h:inputText value="#{cMB.adresse.numero}" />
-rue: <h:inputText value="#{cMB.adresse.rue}" />
-cp: <h:inputText value="#{cMB.adresse.codePostal}" />
-ville: <h:inputText value="#{cMB.adresse.ville}" />
-pays : <h:inputText value="#{cMB.adresse.pays}" />
-mail: <h:inputText value="#{cMB.client.email}" />
-tel: <h:inputText value="#{cMB.client.tel}" />
+			<h:outputLabel class="labeltest">Nom:</h:outputLabel>
+			<h:inputText value="#{cMB.client.nomClient}" />
+			<h:outputLabel class="labeltest">numero adresse:</h:outputLabel>
+			<h:inputText value="#{cMB.adresse.numero}" />
+			<h:outputLabel class="labeltest">rue:</h:outputLabel>
+			<h:inputText value="#{cMB.adresse.rue}" />
+			<h:outputLabel class="labeltest">cp:</h:outputLabel>
+			<h:inputText value="#{cMB.adresse.codePostal}" />
+			<h:outputLabel class="labeltest">ville:</h:outputLabel>
+			<h:inputText value="#{cMB.adresse.ville}" />
+			<h:outputLabel class="labeltest">pays :</h:outputLabel>
+			<h:inputText value="#{cMB.adresse.pays}" />
+			<h:outputLabel class="labeltest">mail:</h:outputLabel>
+			<h:inputText id="mailId" value="#{cMB.client.email}" required="true">
+				<f:validator validatorId="valPers" />
+			</h:inputText>
+
+			<h:outputLabel class="labeltest">tel:</h:outputLabel>
+			<h:inputText value="#{cMB.client.tel}" />
 
 			<!-- Pour envoyer directement en Post -->
 			<h:commandButton value="S'inscrire" action="#{cMB.inscrireClientMB}"></h:commandButton>
-
 		</h:panelGrid>
 	</h:form>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>

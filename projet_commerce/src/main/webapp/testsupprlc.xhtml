@@ -6,31 +6,35 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
 <h:head>
 
-	<title>Suppression Ligne</title>
+	<title>Suppression Ligne Commande</title>
 </h:head>
-<h:body>
-
+<h:body class="main">
+	<h:outputStylesheet library="css" name="monStyle.css" />
 	<h:form>
 		<ui:include src="/resources/templates/headerclient.xhtml" />
 	</h:form>
+	<br />
+	<br />
 
 
-	<h1 style="color: blue; text-align: center;">Supprimer une  ligne du panier</h1>
+	<h1>Supprimer une ligne de commande du panier</h1>
 
 	<!-- enctype pour ajouter une photo -->
-	<h:form enctype="multipart/form-data">
+	<h:form enctype="multipart/form-data" class="form-group">
 		<h:panelGrid columns="2">
 
-		IdProduit: <h:inputText value="#{lcMB.produit.idProduit}" />
-	
+			<h:outputLabel class="labeltest">IdProduit:</h:outputLabel>
+			<h:inputText value="#{lcMB.produit.idProduit}" />
+
 
 			<!-- Pour envoyer directement en Post -->
-			<h:commandButton value="Ajouter" action="#{lcMB.supprimerlignecommandepanierMB}"></h:commandButton>
+			<h:commandButton value="Ajouter"
+				action="#{lcMB.supprimerlignecommandepanierMB}"></h:commandButton>
 
 		</h:panelGrid>
 	</h:form>
 
-	<h1 style="color: blue; text-align: center;">
+	<h1>
 		<h:messages />
 	</h1>
 </h:body>
