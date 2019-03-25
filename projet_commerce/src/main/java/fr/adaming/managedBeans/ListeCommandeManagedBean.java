@@ -648,14 +648,20 @@ public class ListeCommandeManagedBean implements Serializable {
 		// Comme les produits sont groupés ensemble et que la ligne de commande
 		// n'a pas encore d'id propre c'est par le type de produit
 		// que l'identification de la ligne va être réalisée
-		produit = produitService.consulterProduitService(produit);
+		try {
+			produit = produitService.consulterProduitService(produit);
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Le produit n'existe pas"));
+			return "panier";
+		}
 		// on recherche quel ligne contient le produit en question
-		for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
-			if (produit.getDesignation().equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
+		try {
+			for (int i = 0; i < panier.getListeLigneCommande().size(); i++) {
+				if (produit.getDesignation()
+						.equals(panier.getListeLigneCommande().get(i).getProduit().getDesignation())) {
 
-				this.panier.getListeLigneCommande().remove(i);
+					this.panier.getListeLigneCommande().remove(i);
 
-				try {
 					for (int i2 = 0; i2 < panier.getListeLigneCommande().size(); i2++) {
 						total2 = total2 + (int) panier.getListeLigneCommande().get(i2).getPrix();
 					}
@@ -669,19 +675,21 @@ public class ListeCommandeManagedBean implements Serializable {
 						remise2 = 0;
 					}
 
-				} catch (Exception e) {
-					e.printStackTrace();
+					// Enfin on met le panier dans la session et on retourne à
+					// l'accueil
+					// panier
+					remise = remise2;
+					totalar = total3;
+					total = total2;
+
+					return "panier";
 				}
-				// Enfin on met le panier dans la session et on retourne à
-				// l'accueil
-				// panier
-				remise = remise2;
-				totalar = total3;
-				total = total2;
 
-				return "panier";
 			}
-
+		} catch (Exception e) {
+			e.printStackTrace();
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Une erreur que je n'ai pas eu le temps de check est apparue!"));
+			return "panier";
 		}
 		return "panier";
 	}
